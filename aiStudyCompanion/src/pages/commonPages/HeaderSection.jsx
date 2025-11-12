@@ -45,10 +45,7 @@ function Header({ appName, navigationItems, userName, onNavClick, showNotificati
             <span className="text-sm text-neutral-700 font-medium">
               {userName}
             </span>
-            <button
-              aria-label="User menu"
-              className="text-neutral-500 hover:text-neutral-800"
-            >
+            
              
             </button>
           </div>
