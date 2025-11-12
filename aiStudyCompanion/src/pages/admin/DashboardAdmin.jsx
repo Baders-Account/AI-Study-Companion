@@ -33,7 +33,7 @@ function DashboardAdmin() {
     };
 
     return (
-        <section className="flex flex-row  ">
+        <section className="sm:grid  lg:flex flex-row justify-center ">
         <ReviewComponent/>
 
         <AuditLogs/>

@@ -3,7 +3,7 @@
 function AuditLogs() {
         return(
             <>
-            <header className="flex flex-row  p-6 m-6 border rounded-lg shadow-lg w-full max-w-md">
+            <header className="flex flex-row  ml-8 p-6 mt-6 mb-6 border rounded-lg shadow-lg w-full max-w-md">
                 <h1 className="w-full">Audit Logs Panel</h1>
                 <section className="flex flex-col p-2">
                 
