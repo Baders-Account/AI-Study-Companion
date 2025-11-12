@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+
+
+
+/* Define custom theme colors */
+
+@theme {
+  --color-green-900: oklch(0.693 0.128 149.6);
+
+
+}
+
+
+/* Reset default margin and padding */
+body, html,div{    
+    margin: 0 !important;
+    padding: 0 !important;
+}

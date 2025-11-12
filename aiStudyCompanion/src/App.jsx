@@ -7,6 +7,8 @@ import { Route, BrowserRouter, Routes,Link } from 'react-router-dom'
 import DashboardAdmin from './pages/admin/DashboardAdmin'
 import UserManagment from './pages/admin/UserManagment'
 import ContentAdmin from './pages/admin/ContentAdmin'
+import NavBar from './components/NavBar.jsx'
+import AdminNavBar from './components/AdminNavBar.jsx'
 
 
 function App() {
@@ -16,22 +18,13 @@ function App() {
   return (
     
     <BrowserRouter>
-     <header className="bg-white shadow items-center">
-        <nav className="inline-flex   p-4 lg:px-6">
-            <ul className='flex  space-around gap-4  font-medium '>
-                <Link to="/">Dashboard</Link>
-                <Link to="/userManagment">User Managment</Link>
-                <Link to="/Content">Content</Link>
-            </ul>
-        </nav>
-        </header>
+    <AdminNavBar/>
 
-     <p className='text-red-500 mt-2'> Hello bruv </p>
-      <p></p>
+     
 
          <Routes>
             <Route path="/" element= {<DashboardAdmin/>}/>
-            <Route path="/userManagment" element= {<UserManagment/>}/>
+            <Route path="/userManagement" element= {<UserManagment/>}/>
             <Route path="/Content" element= {<ContentAdmin/>}/>
         </Routes>
      
