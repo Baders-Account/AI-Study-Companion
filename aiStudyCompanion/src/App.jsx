@@ -21,10 +21,7 @@ function App() {
     
     <BrowserRouter>
     <AdminNavBar/>
-    <HeaderSection/>
-    <DashboardSection/>
-    <FooterSection webName="AI Study Companion" year="2025" links="https://www.figma.com/design/bt54BoXWBEy8aAx8eTb3cz/Phase-3?node-id=0-1&p=f&t=PGT5ZxiyApEmWMfO-0"/>
-
+    
      
 
          <Routes>
