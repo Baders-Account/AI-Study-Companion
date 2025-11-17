@@ -21,9 +21,6 @@ function App() {
     
     <BrowserRouter>
     <AdminNavBar/>
-    
-     
-
          <Routes>
             <Route path="/" element= {<DashboardAdmin/>}/>
             <Route path="/userManagement" element= {<UserManagment/>}/>
@@ -31,6 +28,9 @@ function App() {
         </Routes>
      
      </BrowserRouter>
+    
+     
+
   
   )
 }

@@ -6,7 +6,9 @@ function AdminNavBar() {
         
 
             // bg-green-600  
-         <header className="flex inline-block w-full shadow-md mb-8 mt-0 bg-green-600">
+
+            <section className='inline  '>
+            <header className="flex rounded shadow-md mb-8 mt-0 bg-green-600   ">
         <nav className="flex justify-center mt-2 mb-4 ml-8 ">
            
                 {/* isActive checks what route is the page in and style it*/}
@@ -22,6 +24,8 @@ function AdminNavBar() {
             
         </nav>
         </header>
+
+                </section>
     );
 }
 
