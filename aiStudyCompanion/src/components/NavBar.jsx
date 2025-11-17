@@ -6,22 +6,32 @@ function NavBar() {
         
 
             // bg-green-600  
-         <header className="flex inline-block w-full shadow-md mb-8 mt-0 bg-green-600">
-        <nav className="flex justify-center mt-2 mb-4 ml-8 ">
+
+            <section className='fixed w-full top-0 start-0 end-0 mb-8  block'>
+            <header className="flex flex-wrap shadow-md mt-0 bg-gray-900   ">
+        <nav className="flex flex-wrap  mt-2 mb-4 ml-8 ">
            
                 {/* isActive checks what route is the page in and style it*/}
 
-                <NavLink to="/" aria-current="page" className="rounded-md bg-green-900 px-3 py-2 text-sm font-medium text-white ml-4  hover:bg-white/5 hover:text-white"
-                >Dashboard
+
+                {/* */}
+                <NavLink to="/" aria-current="page" 
+                >
                 </NavLink>
 
-                <NavLink to="/Courses" className="rounded-md bg-green-900 px-3 py-2 text-sm font-medium text-white ml-4  hover:bg-white/5 hover:text-white"
-                >Courses</NavLink>
-                <NavLink to="/Profile" className="rounded-md bg-green-900 px-3 py-2 text-sm font-medium text-white ml-4  hover:bg-white/5 hover:text-white"
+                <NavLink to="/Dashboard" className="rounded-md bg-gray-500 px-3 py-2 text-sm font-medium text-white ml-4  hover:bg-white/5 hover:text-white"
+                >Dashboard</NavLink>
+
+                <NavLink to="/About" className="rounded-md bg-gray-500 px-3 py-2 text-sm font-medium text-white ml-4  hover:bg-white/5 hover:text-white"
+                >About</NavLink>
+
+                <NavLink to="/Profile" className="rounded-md bg-gray-500 px-3 py-2 text-sm font-medium text-white ml-4  hover:bg-white/5 hover:text-white"
                 >Profile</NavLink>
             
         </nav>
         </header>
+
+                </section>
     );
 }
 

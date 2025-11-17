@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 
-import { Route, BrowserRouter, Routes,Link } from 'react-router-dom'
+import { Route, BrowserRouter, Routes} from 'react-router-dom'
 import DashboardAdmin from './pages/admin/DashboardAdmin'
 import UserManagment from './pages/admin/UserManagment'
 import ContentAdmin from './pages/admin/ContentAdmin'
@@ -12,6 +11,7 @@ import AdminNavBar from './components/AdminNavBar.jsx'
 import DashboardSection from './pages/commonPages/DashboardSection.jsx'
 import FooterSection from './pages/commonPages/FooterSection.jsx'
 import HeaderSection from './pages/commonPages/HeaderSection.jsx'
+import StudentDashboard from './pages/student/StudentDashboard.jsx'
 
 function App() {
   const [navigation, setCount] = useState(0)
@@ -20,11 +20,12 @@ function App() {
   return (
     
     <BrowserRouter>
-    <AdminNavBar/>
+    <NavBar/>
          <Routes>
-            <Route path="/" element= {<DashboardAdmin/>}/>
-            <Route path="/userManagement" element= {<UserManagment/>}/>
-            <Route path="/Content" element= {<ContentAdmin/>}/>
+            <Route path="/" element= {<StudentDashboard/>}/>
+            <Route path="/Dashboard" element= {<StudentDashboard/>}/>
+            <Route path="/About" element= {<UserManagment/>}/>
+            <Route path="/Profile" element= {<ContentAdmin/>}/>
         </Routes>
      
      </BrowserRouter>
