@@ -3,39 +3,78 @@ import { Button } from "../../../components/Button";
 
 
 function ToDoList(){
-    const [tasks, setTasks] = useState([{id:0,name: 'i want you', completed:false }]);
+    const [tasks, setTasks] = useState([]);
     const [inputValue, setInputValue] = useState('');
     
-    const addTask = (e) => {
-            const newTask = {id: Date.now(), text:e.target.value, completed: false };
-            setTasks([...tasks, newTask])
+    function addTask () {
+            
+            const newTask = {id: Date.now(), text:inputValue, completed: false };
+            
+           
+            setTasks([...tasks, newTask]);
+            setInputValue('');
     };
-    const toggleComplete= (e) => {
-            console.log("please");
+    const toggleComplete=(e) =>{
+            const id= Number(e.target.value) 
+            setTasks(tasks.map(task =>
+                task.id == id ? {...task, completed: !task.completed}: task
+            ));
+            console.log(e.target.value)
+            console.log(tasks);
     };
+
+    function clearAll(){
+        setTasks([]);
+    };
+    
 
     return(
 
       
         
-        <section className="relative flex flex-col justify-between p-6 mt-15  border rounded-lg shadow-lg   ">
+        <section className="relative flex flex-col gap-1 p-6 mt-15  border rounded-lg shadow-lg min-h-1/6  ">
             
+            
+            <div className="flex flex-col absolute top-0 right-0">
+
+            <button onClick={addTask} type="button" className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mt-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer"> Add a task</button>
+            <button onClick={clearAll} type="button" className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mt-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer"> Clear All</button>
+            </div>
             
 
-            <button onClick={addTask} type="button" className="absolute top-0 right-0 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mt-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer"> Add a task</button>
-            
-
-            <input type="text" className="bg-gray-500 max-w-1/2" onChange={(e) => setInputValue(e.target.value)}></input>
+            <input name="input" type="text" value={inputValue} placeholder=" Type here" className="bg-gray-200 p-1 rounded max-w-1/2" onChange={(e) => setInputValue(e.target.value)}></input>
           
-            <ul>
-                {tasks.map(task => (
+            <ul className="relative ml-3 min-h-1/2 max-w-1/2">
+                
+                {tasks.length > 0 ? (tasks.map(task => (
                         <li key={task.id} className="flex flex-wrap gap-4" >
-                            {task.name}
+                            
+                            {task.completed ? (
+                                <div className="line-through">
 
-                            <input type="checkbox" ></input>
+                                <strong>Task: </strong> {task.text}
+                                </div>
+                                
+                            ) : (
+                                <div>
+
+                                <strong>Task: </strong> {task.text}
+                                </div>
+                                
+                            )
+                                
+                            }
+                            <input type="checkbox" value={task.id} onChange={toggleComplete}  ></input>
                             </li>
                         
-                ))
+                ))) : (
+                    <li className="absolute">
+                        <h4>There isn't any task added yet.</h4>
+                        <p>Try and add one</p>
+
+                    </li>
+
+                )
                 }
             </ul>
         </section>
