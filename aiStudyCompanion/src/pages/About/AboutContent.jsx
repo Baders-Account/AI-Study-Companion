@@ -1,4 +1,4 @@
-function developers(){
+function AboutContent(){
     const defaultStudents = [
         {
         name: "Student One",
@@ -73,4 +73,4 @@ function developers(){
     </main>
     )
 }
-export default developers;
+export default AboutContent;
