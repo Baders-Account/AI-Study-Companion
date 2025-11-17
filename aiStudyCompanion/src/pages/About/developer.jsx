@@ -38,7 +38,7 @@ function developers(){
                                         alt={`${s.name} portrait`}
                                         className="h-48 w-full object-cover sm:h-56 md:h-64"
                                         loading="lazy"
-                                    />
+                                    /> 
                                     <figcaption className="sr-only">{s.name}</figcaption>
                                 </figure>
                             ))}
