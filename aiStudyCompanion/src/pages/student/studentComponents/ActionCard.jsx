@@ -6,7 +6,7 @@ function ActionCard(){
        <section className="relative grid grid-cols-2 grid-rows-3 md:flex-shrink p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-64 bg-white dark:bg-gray-800 justify-center lg:gap-6">
 
   
-  <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4   md:mb-0 md:absolute md:top-5 md:left-4 lg:absolute lg:top-5 lg:left-4">
+  <h1 className=" font-bold text-gray-900 dark:text-white mb-4   md:mb-0 lg:text-3xl lg:row-start-1 lg:col-start-1 lg:justify-self-start lg:self-center">
     Actions
   </h1>
   
@@ -26,7 +26,7 @@ function ActionCard(){
     </button>
         </section>
 
-    <section className="flex sm:flex-col md:flex-row flex-shrink justify-center row-start-3 md:justify-around items-center w-full gap-3 md:gap-4  lg:flex-row">
+    <section className="flex sm:flex-col md:flex-row flex-shrink justify-center lg:row-start-2 lg:col-start-2  md:justify-around items-center w-full gap-3 md:gap-4  lg:flex-row">
 
     <button 
       type="button" 
