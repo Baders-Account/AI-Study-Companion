@@ -1,12 +1,48 @@
 
-
-
-
+import {CoursesContext} from './CourseContext'
+import { useContext } from "react";
+import { NavLink } from "react-router-dom";
 function Progress(){
-
+    const shared = useContext(CoursesContext)
     return(
         <section className="grid grid-cols-2 grid-rows-2 p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-64 bg-white dark:bg-gray-800 justify-center ">
-            <p>Progress</p>
+                
+            <ul className="justify-items-start   flex flex-col gap-4 font-bold text-lg">
+                <h1 className=" font-bold text-gray-900 dark:text-white mb-4   md:mb-0 lg:text-3xl lg:row-start-1 lg:col-start-1 lg:justify-self-start lg:self-start">
+                Progress
+            </h1>
+                {shared.courses.length >0  ? (
+                    
+                    shared.courses.map(course =>(
+                        
+                            
+                            <li key={course.id}>
+
+
+                                <NavLink to={`/${course.courseName}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center"> {course.courseName} </NavLink>
+                            </li>
+                           
+                                
+                           
+                                
+                                
+                                
+                            ))
+                            
+                            
+                            
+                            
+                        ): (
+                            <li className="justify-self-center">
+                            You did not add any Course.
+                        </li>
+                )}
+                
+                
+               
+                
+
+            </ul>
         </section>
         
         
