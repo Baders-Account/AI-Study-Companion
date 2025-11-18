@@ -1,11 +1,14 @@
 import ToDoList from "./studentComponents/toDoList";
 import ActionCard from "./studentComponents/ActionCard";
+import Courses from "./studentComponents/Courses";
+import { Link,Route, Routes,BrowserRouter } from "react-router-dom";
 
 
 function StudentDashboard() {
 
     return(
 
+        
         
         <section className="mt-9 static border  grid grid-rows-12  grid-cols-12   h-full   ">
 
@@ -20,8 +23,8 @@ function StudentDashboard() {
 
         </section>
 
-        <section className="border row-start-6 col-start-2  col-span-4">
-            <h4>Courses</h4>
+        <section className=" row-start-6 col-start-2  col-span-4">
+            <Courses/>
         </section>
 
         <section className="border row-start-6 col-start-7 col-span-4">
@@ -36,7 +39,10 @@ function StudentDashboard() {
         
 
         </section>
-      
+        
+
+       
+        
         
         
     )
