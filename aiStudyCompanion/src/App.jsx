@@ -27,6 +27,8 @@ function App() {
             <Route path="/Dashboard" element= {<StudentDashboard/>}/>
             <Route path="/About" element= {<AboutContent/>}/>
             <Route path="/Profile" element= {<ContentAdmin/>}/>
+
+        
         </Routes>
      
      </BrowserRouter>
