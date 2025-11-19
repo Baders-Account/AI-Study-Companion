@@ -1,24 +1,25 @@
+import image from "../../assets/profilePic.jpg"
 function AboutContent(){
     const defaultStudents = [
         {
         name: "BADER ALMUTAIRI",
         major: "Computer Science",
-        img: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=800&auto=format&fit=crop",
+        img: image,
         },
         {
         name: "FAISAL ALHARBI",
         major: "Computer Science",
-        img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop",
+        img: image,
         },
         {
         name: "ALWALEED ALHARTHI",
         major: "Software Engineering",
-        img: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=800&auto=format&fit=crop",
+        img: image,
         },
         {
         name: "MUATH  ALZAHRANi",
         major: "Software Engineering",
-        img: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=800&auto=format&fit=crop",
+        img: image,
         },
     ];
     const description ="The AI Study Companion is a web-based platform designed to simplify student life by unifying study tools like notes, flashcards, quizzes, and progress tracking in one place. It features an intelligent AI assistant that can summarize notes, generate quizzes and flashcards, and create personalized study plans to help students focus on their weak areas. Instructors can upload materials, share quizzes, and monitor student progress, while admins manage user accounts, content, and system settings. The platform promotes collaboration through study rooms and discussion spaces, aiming to make studying more organized, efficient, and less stressful for both students and educator"
@@ -31,7 +32,7 @@ function AboutContent(){
                 <div className="mx-auto max-w-6xl px-4 py-10">
                     <h2 id="photos-title" className="sr-only">Student Photos</h2>
                         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                            {students.map((s, i) => (
+                            {defaultStudents.map((s, i) => ( // <-- CORRECTED: Changed 'students' to 'defaultStudents'
                                 <figure key={i} className="overflow-hidden rounded-2xl shadow-sm">
                                     <img
                                         src={s.img}
@@ -52,7 +53,7 @@ function AboutContent(){
                 <div className="mx-auto max-w-6xl px-4 py-10">
                     <h2 id="team-title" className="text-2xl font-semibold mb-6">Team</h2>
                         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-                            {students.map((s, i) => (
+                            {defaultStudents.map((s, i) => ( // <-- CORRECTED: Changed 'students' to 'defaultStudents'
                                 <li key={i} className="rounded-2xl border border-gray-200 p-4 shadow-sm hover:shadow-md transition-shadow">
                                     <p className="font-medium">{s.name}</p>
                                     <p className="text-sm text-gray-600">{s.major}</p>

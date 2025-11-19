@@ -12,6 +12,7 @@ import DashboardSection from './pages/commonPages/DashboardSection.jsx'
 import FooterSection from './pages/commonPages/FooterSection.jsx'
 import HeaderSection from './pages/commonPages/HeaderSection.jsx'
 import StudentDashboard from './pages/student/StudentDashboard.jsx'
+import AboutContent from './pages/About/AboutContent.jsx'
 
 function App() {
   const [navigation, setCount] = useState(0)
@@ -24,7 +25,7 @@ function App() {
          <Routes>
             <Route path="/" element= {<StudentDashboard/>}/>
             <Route path="/Dashboard" element= {<StudentDashboard/>}/>
-            <Route path="/About" element= {<UserManagment/>}/>
+            <Route path="/About" element= {<AboutContent/>}/>
             <Route path="/Profile" element= {<ContentAdmin/>}/>
         </Routes>
      
