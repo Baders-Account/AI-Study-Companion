@@ -1,7 +1,4 @@
-
-
-function ActionCard(){
-
+function CoursePage(){
     return(
        <section className="relative grid grid-cols-2 grid-rows-3 md:flex-shrink p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-64 bg-white dark:bg-gray-800 justify-center lg:gap-6">
 
@@ -45,9 +42,6 @@ function ActionCard(){
     </section>
 
 </section>
-        
     )
-
 }
-
-export default ActionCard;
+export default CoursePage
