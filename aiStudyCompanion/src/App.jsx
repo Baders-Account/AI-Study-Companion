@@ -14,7 +14,7 @@ import HeaderSection from './pages/commonPages/HeaderSection.jsx'
 import StudentDashboard from './pages/student/StudentDashboard.jsx'
 import { ShowContext } from './pages/student/studentComponents/Courses.jsx'
 import CourseContext from './pages/student/studentComponents/CourseContext.jsx'
-
+import AboutContent from './pages/About/AboutContent.jsx'
 
 function App() {
   const [showAllCourses, setShowAllCourses] = useState(false)
