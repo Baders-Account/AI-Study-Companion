@@ -4,16 +4,18 @@ import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 function Progress(){
     const shared = useContext(CoursesContext)
+    const limit = 3 // so that the courses does not overlap if had many courses added
+    
     return(
-        <section className="grid grid-cols-2 grid-rows-2 p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-64 bg-white dark:bg-gray-800 justify-center ">
+        <section className="grid grid-cols-2 grid-rows-2 p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-82 max-h-full bg-white dark:bg-gray-800 justify-center ">
                 
             <ul className="justify-items-start   flex flex-col gap-4 font-bold text-lg">
                 <h1 className=" font-bold text-gray-900 dark:text-white mb-4   md:mb-0 lg:text-3xl lg:row-start-1 lg:col-start-1 lg:justify-self-start lg:self-start">
                 Progress
             </h1>
-                {shared.courses.length >0  ? (
+                {shared.courses!=null &&shared.courses.length >0  ? (
                     
-                    shared.courses.map(course =>(
+                    shared.courses.slice(0,limit).map(course =>(
                         
                             
                             <li key={course.id}>
