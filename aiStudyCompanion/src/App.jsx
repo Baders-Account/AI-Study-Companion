@@ -30,6 +30,7 @@ function App() {
          <Routes>
             <Route path="/" element= {<StudentDashboard/>}/>
             <Route path="/Dashboard" element= {<StudentDashboard/>}/>
+            <Route path="/courses" element={<CoursesPage />} />
             <Route path="/About" element= {<AboutContent/>}/>
             <Route path="/Profile" element= {<CoursePage/>}/>
 
