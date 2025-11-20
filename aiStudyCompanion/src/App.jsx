@@ -15,6 +15,7 @@ import StudentDashboard from './pages/student/StudentDashboard.jsx'
 import { ShowContext } from './pages/student/studentComponents/Courses.jsx'
 import CourseContext from './pages/student/studentComponents/CourseContext.jsx'
 import AboutContent from './pages/About/AboutContent.jsx'
+import CoursePage from './pages/student/studentComponents/CoursesPage.jsx'
 
 function App() {
   const [showAllCourses, setShowAllCourses] = useState(false)
@@ -30,7 +31,7 @@ function App() {
             <Route path="/" element= {<StudentDashboard/>}/>
             <Route path="/Dashboard" element= {<StudentDashboard/>}/>
             <Route path="/About" element= {<AboutContent/>}/>
-            <Route path="/Profile" element= {<ContentAdmin/>}/>
+            <Route path="/Profile" element= {<CoursePage/>}/>
 
         
         </Routes>
