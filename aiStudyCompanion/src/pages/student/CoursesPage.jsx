@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import NotesSection from "./sections/NotesSection";
-import AiAssistantSection from "./sections/AiAssistantSection";
-import QuizzesSection from "./sections/QuizzesSection";
+import CreateViewNotes from "./Sections/CreateViewNotes"
+import AiAssistant from "./Sections/AiAssistant"
+import ViewQuiz from "./Sections/ViewQuiz"
 
-function CoursesPage() {
+export default function CoursesPage() {
   return (
     <section className="p-6 mt-16 w-full bg-white dark:bg-gray-900">
       <div className="mb-6 flex items-center justify-between">
@@ -22,5 +22,3 @@ function CoursesPage() {
     </section>
   );
 }
-
-export default CoursePage

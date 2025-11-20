@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { isValidUrl, buildNote, getCollapsedList } from "./utils";
+import { isValidUrl, buildNote, getCollapsedList } from "../studentComponents/utils";
 
  function CreateViewNotes() {
   const [notes, setNotes] = useState([
@@ -44,7 +44,7 @@ import { isValidUrl, buildNote, getCollapsedList } from "./utils";
           Create Note & View Notes
         </h2>
         <p className="text-sm text-gray-500">
-          Add a note (name + link). Only 3 show by default; toggle to see all.
+          Add a note (name + link).
         </p>
       </header>
 

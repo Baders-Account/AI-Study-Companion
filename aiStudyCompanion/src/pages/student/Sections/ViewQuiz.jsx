@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { getCollapsedList, SAMPLE_QUIZZES } from "./utils";
+import { getCollapsedList, SAMPLE_QUIZZES } from "../studentComponents/utils";
 
 
 function ViewQuiz() {
