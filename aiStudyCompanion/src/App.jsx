@@ -15,10 +15,17 @@ import StudentDashboard from './pages/student/StudentDashboard.jsx'
 
 import CourseContext from './pages/student/studentComponents/CourseContext.jsx'
 import AboutContent from './pages/About/AboutContent.jsx'
-import CoursePage from './pages/student/studentComponents/CoursesPage.jsx'
+import { useContext } from 'react'
+import CoursesPage from './pages/student/CoursesPage.jsx'
+import {CoursesContext} from './pages/student/studentComponents/CourseContext.jsx'
+
 export const ShowContext = React.createContext();
 function App() {
   const [showAllCourses, setShowAllCourses] = useState(false)
+  const sharedCourses = useContext(CoursesContext)
+  
+
+  
   
 
   return (
@@ -30,9 +37,10 @@ function App() {
          <Routes>
             <Route path="/" element= {<StudentDashboard/>}/>
             <Route path="/Dashboard" element= {<StudentDashboard/>}/>
-            <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/courses/:courseName" element={<CoursesPage  />}/> 
+            
             <Route path="/About" element= {<AboutContent/>}/>
-            <Route path="/Profile" element= {<CoursePage/>}/>
+            <Route path="/Profile" element= {<CoursesPage/>}/>
 
         
         </Routes>

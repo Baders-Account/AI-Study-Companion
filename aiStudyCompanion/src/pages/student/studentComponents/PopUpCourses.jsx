@@ -32,7 +32,7 @@ function PopUpCourses({ onClose }) {
                             <li key={course.id} >
 
 
-                                <NavLink to={`/${course.courseName}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center hover:bg-blue-900 hover:cursor-pointer"> {course.courseName}  </NavLink>
+                                <NavLink to={`/courses/${encodeURIComponent(course.courseName)}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center hover:bg-blue-900 hover:cursor-pointer"> {course.courseName}  </NavLink>
                                 
                             </li>
                            
