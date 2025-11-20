@@ -16,7 +16,7 @@ function Courses(){
          const [courseAdded,setCourseAdded] =useState(1);         
         const [inputValue, setInputValue] = useState("");
         const { setShowAllCourses } = useContext(ShowContext);
-        const navigate = useNavigate();
+        
 
 
         function addCourse() {
@@ -53,7 +53,7 @@ function Courses(){
             <button type="button" onClick={addCourse} disabled={!inputValue} className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5    dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"> Add a course</button>
            
 
-            <button type="button" onClick={() => navigate("/courses")} className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"> View Courses </button>
+            <button type="button" onClick={() => setShowAllCourses(true) } className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"> View Courses </button>
         
             
             
@@ -77,12 +77,13 @@ function Courses(){
 
                                 
 
-                                <NavLink to={`/${course.courseName}`} className=" border rounded-lg shadow-lg py-3 px-3   w-full"> 
+                                <NavLink to={`/courses/${encodeURIComponent(course.courseName)}`} className=" border rounded-lg shadow-lg py-3 px-3   w-full"> 
                                 {course.courseName} 
                                 
                                 
                                  </NavLink>
 
+                                    {/*remove button*/ }
                                  <button type="button" value={course.id} onClick={(e)=> { shared.setCourses(shared.courses.filter(course => (course.id != e.target.value)));console.log(`before removing ${courseAdded}`); if(courseAdded>0){setCourseAdded(courseAdded-1);}; console.log(`after removing ${courseAdded}`); }} className="ml-auto font-bold hover:text-blue-400 hover:cursor-pointer">remove</button>
                                 
                               
