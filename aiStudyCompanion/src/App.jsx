@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React,{ useState } from 'react'
 
 import './App.css'
 
@@ -12,11 +12,11 @@ import DashboardSection from './pages/commonPages/DashboardSection.jsx'
 import FooterSection from './pages/commonPages/FooterSection.jsx'
 import HeaderSection from './pages/commonPages/HeaderSection.jsx'
 import StudentDashboard from './pages/student/StudentDashboard.jsx'
-import { ShowContext } from './pages/student/studentComponents/Courses.jsx'
+
 import CourseContext from './pages/student/studentComponents/CourseContext.jsx'
 import AboutContent from './pages/About/AboutContent.jsx'
-import CoursesPage from './pages/student/CoursesPage.jsx';
-
+import CoursePage from './pages/student/studentComponents/CoursesPage.jsx'
+export const ShowContext = React.createContext();
 function App() {
   const [showAllCourses, setShowAllCourses] = useState(false)
   
@@ -32,8 +32,7 @@ function App() {
             <Route path="/Dashboard" element= {<StudentDashboard/>}/>
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/About" element= {<AboutContent/>}/>
-            <Route path="/Profile" element= {<ContentAdmin/>}/>
-            
+            <Route path="/Profile" element= {<CoursePage/>}/>
 
         
         </Routes>

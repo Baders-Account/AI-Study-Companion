@@ -5,7 +5,7 @@ import Progress from "./studentComponents/Progress";
 import { Link,Route, Routes,BrowserRouter } from "react-router-dom";
 import { useContext, useState } from "react";
 import CourseContext from "./studentComponents/CourseContext";
-import { ShowContext } from "./studentComponents/Courses";
+import { ShowContext } from "../../App";
 import PopUpCourses from "./studentComponents/PopUpCourses";
  
 
@@ -17,9 +17,9 @@ function StudentDashboard() {
         
     
         
-        <section className="mt-9 sm:flex sm:flex-col md:grid md:grid-rows-6 md:grid-cols-6 lg:grid lg:grid-flow-col  lg:grid-rows-12  lg:grid-cols-12   h-full   ">
+        <section className="mt-9 sm:flex sm:flex-col md:grid md:grid-rows-6 md:grid-cols-6 lg:grid lg:grid-flow-col  lg:grid-rows-12  lg:grid-cols-12      ">
 
-        <section className=" lg:row-start-1 lg:col-start-7  lg:col-span-5  justify-self-around">
+        <section className=" lg:row-start-1 lg:col-start-7  lg:col-span-5 lg:row-span-2  justify-self-around">
             <ToDoList/>
               
         
@@ -35,18 +35,20 @@ function StudentDashboard() {
             
 
           
-       <section className="col-start-2 col-span-4 row-start-4">
+       <section className="col-start-2 col-span-4 row-start-2 ">
 
             <Progress/>
        </section>
-        
-          { showAllCourses != null ? (
+        <div className="mt-10">
 
-          
-        showAllCourses && (<PopUpCourses onClose={() => setShowAllCourses(false)} />)):(<h1>How</h1>)
-                
+          { showAllCourses !== null ? (
+              
+              
+              showAllCourses && (<PopUpCourses onClose={() => setShowAllCourses(false)} />)):(<h1>How</h1>)
+              
             }
             
+            </div>
         
         
         

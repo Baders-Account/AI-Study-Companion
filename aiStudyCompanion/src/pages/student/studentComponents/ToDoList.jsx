@@ -32,7 +32,7 @@ function ToDoList(){
 
       
         
-        <section className="relative grid grid-cols-12 grid-rows-2 gap-1 p-6 mt-15 items-stretch border rounded-lg shadow-lg w-full min-h-64 bg-white dark:bg-gray-800 justify-center  ">
+        <section className="relative grid grid-cols-12 grid-rows-2 gap-1 p-6 mt-16 items-stretch border rounded-lg shadow-lg w-full h-full  bg-white dark:bg-gray-800 justify-center  ">
             
             
             <div className="flex flex-col flex-shrink items-stretch col-start-11 col-span-2">
@@ -48,7 +48,7 @@ function ToDoList(){
 
             <input name="input" type="text" value={inputValue} placeholder=" Type here" className="bg-gray-200 ml-3 p-2 rounded  " onChange={(e) => setInputValue(e.target.value)}></input>
           
-            <ul className="relative flex flex-wrap items-stretch gap-2 ml-3 p-2 ">
+            <ul className="relative flex flex-col items-stretch gap-2 ml-3 p-2 ">
                 
                 {tasks.length > 0 ? (tasks.map(task => (
                     <li key={task.id} className=" flex flex-row gap-4 justify-around self-start" >

@@ -7,7 +7,7 @@ function NavBar() {
 
             // bg-green-600  
 
-            <section className='fixed w-full top-0 start-0 end-0 mb-8  block'>
+            <section className='fixed w-full z-1 top-0 start-0 end-0 mb-8  block'>
             <header className="flex flex-wrap shadow-md mt-0 bg-gray-900   ">
         <nav className="flex flex-wrap  mt-2 mb-4 ml-8 ">
            

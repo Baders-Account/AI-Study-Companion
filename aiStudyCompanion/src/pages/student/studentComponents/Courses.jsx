@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CourseContext from "./CourseContext";
 import PopUpCourses from "./PopUpCourses";
 import StudentDashboard from "../StudentDashboard";
-export const ShowContext = React.createContext();
+import { ShowContext } from "../../../App";
 
 function Courses(){
          const shared = useContext(CoursesContext) // courses are here
@@ -23,24 +23,17 @@ function Courses(){
                
                 const newCourse = { id:Date.now() , courseName:inputValue}
                 setInputValue('');
-                
+                console.log(`before adding ${courseAdded}`)
                 setCourseAdded(courseAdded+1);
                 shared.setCourses([...shared.courses,newCourse])
+                console.log(`after adding ${courseAdded}`)
                 
-                
-                if(courseAdded> limit){
+                if(courseAdded>= limit){
                     toast("Your course has been added, check view courses button to check all courses",{autoClose:3000})
                 }
         }
 
-     const removeCourse = (e) => {
-            const courseID= e.id
-            shared.setCourses(shared.courses.filter(course => (
-
-                course.id != courseID   
-            )
-        ))
-        }
+     
 
     
     
@@ -49,7 +42,7 @@ function Courses(){
      
        
        
-        <section className="grid grid-cols-6 grid-rows-2  p-6 mt-16 md:gap-4 border rounded-lg shadow-2xl w-full min-h-82 max-h-full bg-white dark:bg-gray-800 justify-center">
+        <section className="grid grid-cols-6 grid-rows-2  p-6 mt-16 md:gap-4 border rounded-lg shadow-2xl w-full min-h-82 max-h-100 bg-white dark:bg-gray-800 justify-center">
             
             
             <ToastContainer position="top-center" theme="dark" autoClose={3000}/>
@@ -67,24 +60,32 @@ function Courses(){
             </div>
              
              
-            <section className=" row-start-1 col-start-1 col-span-4 justify-self-start flex flex-col gap-2 ">
+            <section className=" row-start-1 col-start-1 col-span-4 justify-self-start flex flex-col gap-4 ">
                 <h1 className=" font-bold text-gray-900 dark:text-white mb-4   md:mb-0 lg:text-3xl lg:row-start-1 lg:col-start-1 lg:justify-self-start lg:self-start">
                 Courses
             </h1>
              
              <input name="input" type="text" placeholder=" Type here" value={inputValue} onChange={(e) => setInputValue(e.target.value) } className="p-2 bg-gray-200  rounded-lg "></input>
           
-            <ul className="justify-items-start   flex  flex-col gap-4 font-bold text-lg">
+            <ul className="justify-items-start   flex  flex-col gap-8 font-bold text-lg ">
                 
                 {shared.courses !=null && shared.courses.length >0 ? (
                     
                     shared.courses.slice(0,limit).map(course =>(
                         
-                            <li key={course.id} >
+                            <li key={course.id} className="flex flex-row gap-8" >
 
-
-                                <NavLink to={`/${course.courseName}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center"> {course.courseName}  </NavLink>
                                 
+
+                                <NavLink to={`/${course.courseName}`} className=" border rounded-lg shadow-lg py-3 px-3   w-full"> 
+                                {course.courseName} 
+                                
+                                
+                                 </NavLink>
+
+                                 <button type="button" value={course.id} onClick={(e)=> { shared.setCourses(shared.courses.filter(course => (course.id != e.target.value)));console.log(`before removing ${courseAdded}`); if(courseAdded>0){setCourseAdded(courseAdded-1);}; console.log(`after removing ${courseAdded}`); }} className="ml-auto font-bold hover:text-blue-400 hover:cursor-pointer">remove</button>
+                                
+                              
                             </li>
                            
                                
