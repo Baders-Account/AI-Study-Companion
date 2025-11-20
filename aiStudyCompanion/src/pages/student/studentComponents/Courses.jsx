@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CourseContext from "./CourseContext";
 import PopUpCourses from "./PopUpCourses";
 import StudentDashboard from "../StudentDashboard";
-export const ShowContext = React.createContext();
+import { ShowContext } from "../../../App";
 
 function Courses(){
          const shared = useContext(CoursesContext) // courses are here

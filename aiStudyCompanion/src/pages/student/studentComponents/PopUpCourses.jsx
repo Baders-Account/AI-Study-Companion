@@ -6,11 +6,13 @@ function PopUpCourses({ onClose }) {
   const shared = useContext(CoursesContext)
 
   return (
-    <div className="fixed inset-0  bg-opacity-40 backdrop-blur-sm flex justify-center max-h-full ">
-      <div className="bg-gray-900 text-white rounded-lg  p-6 max-h-3/4 min-w-1/2 shadow-2xl">
+    
+    <div className="fixed inset-0  z-2 bg-opacity-40 backdrop-blur-sm flex place-content-around ">
+      <div className="bg-gray-900  text-white rounded-lg  p-2 max-h-1/2 min-w-1/2 shadow-2xl">
         <button
-          className="ml-auto mb-4 block text-xl font-bold hover:text-red-400"
+          className="ml-auto mb-4 block text-3xl font-bold hover:text-blue-400 hover:cursor-pointer"
           onClick={onClose}
+          
         >
           ×
         </button>
@@ -30,7 +32,7 @@ function PopUpCourses({ onClose }) {
                             <li key={course.id} >
 
 
-                                <NavLink to={`/${course.courseName}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center"> {course.courseName}  </NavLink>
+                                <NavLink to={`/${course.courseName}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center hover:bg-blue-900 hover:cursor-pointer"> {course.courseName}  </NavLink>
                                 
                             </li>
                            
