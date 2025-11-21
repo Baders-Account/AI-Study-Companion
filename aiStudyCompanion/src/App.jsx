@@ -8,9 +8,7 @@ import UserManagment from './pages/admin/UserManagment'
 import ContentAdmin from './pages/admin/ContentAdmin'
 import NavBar from './components/NavBar.jsx'
 import AdminNavBar from './components/AdminNavBar.jsx'
-import DashboardSection from './pages/commonPages/DashboardSection.jsx'
-import FooterSection from './pages/commonPages/FooterSection.jsx'
-import HeaderSection from './pages/commonPages/HeaderSection.jsx'
+
 import StudentDashboard from './pages/student/StudentDashboard.jsx'
 
 import CourseContext from './pages/student/studentComponents/CourseContext.jsx'
