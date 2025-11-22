@@ -9,7 +9,7 @@ AI Study Companion
    generate quizzes, and create personalized study plans to help students focus on their weak areas. The
    platform promotes collaboration and aims to make studying organized, efficient, and less stressful for
    both students and educators.
- 
+ ------------------------------------------------------------------------------------
  Key Roles
  
    1- Student: Can access course materials, create notes, generate quizzes, manage to-do lists, and
@@ -19,6 +19,7 @@ AI Study Companion
    student progress.
    
    3-Admin: Manages user accounts, content, and system settings.
+------------------------------------------------------------------------------------
    
  Team Members (Team 6 SWE363-03)
  
