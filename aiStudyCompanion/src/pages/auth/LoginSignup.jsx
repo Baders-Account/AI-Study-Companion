@@ -20,10 +20,11 @@ function LoginSignup() {
     const u = loginUsername.trim().toLowerCase();
     const p = loginPassword;
 
-    if (u === "student" && p === "123") return navigate("/Dashboard");
-    if (u === "instructor" && p === "123") return navigate("/instructor");
+   if (u === "student" && p === "123") return navigate("/Dashboard");
+  if (u === "instructor" && p === "123") return navigate("/instructor");
+  if (u === "admin" && p === "123") return navigate("/admin"); // ✅ add this
 
-    setLoginError("Invalid username or password. Try student/123 or instructor/123.");
+  setLoginError("Invalid username or password. Try student/123, instructor/123, or admin/123.");
   };
 
   const handleSignup = (e) => {
@@ -39,7 +40,7 @@ function LoginSignup() {
       setSignupError("Passwords do not match.");
       return;
     }
-    setSignupSuccess("Account created (demo). You can log in with student/123 or instructor/123.");
+    setSignupSuccess("Account created (demo). You can log in with student/123 or instructor/123 or admin/123.");
   };
 
   return (
@@ -74,7 +75,7 @@ function LoginSignup() {
             <form onSubmit={handleLogin} className="flex flex-col gap-4">
               <input
                 type="text"
-                placeholder="Enter Username (student or instructor)"
+                placeholder="Enter Username (student or instructor or admin)"
                 value={loginUsername}
                 onChange={(e) => setLoginUsername(e.target.value)}
                 className="w-full px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -93,7 +94,7 @@ function LoginSignup() {
                 Log In
               </button>
               <div className="text-center mt-2">
-                <span className="text-xs text-gray-300">Demo: student/123 or instructor/123</span>
+                <span className="text-xs text-gray-300">Demo: student/123 or instructor/123 or admin/123.</span>
               </div>
             </form>
           </div>
