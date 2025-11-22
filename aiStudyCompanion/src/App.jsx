@@ -17,6 +17,10 @@ import { useContext } from 'react'
 import CoursesPage from './pages/student/CoursesPage.jsx'
 import {CoursesContext} from './pages/student/studentComponents/CourseContext.jsx'
 
+
+import LoginSignup from './pages/auth/LoginSignup.jsx'
+import InstructorDashboard from './pages/instructor/InstructorDashboard.jsx'
+
 export const ShowContext = React.createContext();
 function App() {
   const [showAllCourses, setShowAllCourses] = useState(false)
@@ -39,6 +43,9 @@ function App() {
             
             <Route path="/About" element= {<AboutContent/>}/>
             <Route path="/Profile" element= {<CoursesPage/>}/>
+
+            <Route path="/login" element={<LoginSignup />} />
+            <Route path="/instructor" element={<InstructorDashboard />} />
 
         
         </Routes>
