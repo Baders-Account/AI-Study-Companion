@@ -21,8 +21,11 @@ AI Study Companion
  Team Members (Team 6 SWE363-03)
  
    Bader Almutairi - s202159390
+   
    Faisal Alharbi - s202261000
+   
    Alwaleed Alharthi - s202158850
+   
    Muath Alzahrani - s202161950
 
  Setup and Installation
