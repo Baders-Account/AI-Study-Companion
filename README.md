@@ -93,14 +93,15 @@ AI Study Companion
    ----------------------------------------------------------------------------------------------------------------
    
  Instructor Features:
-    1. Dashboard: Log in as an instructor to access the Instructor Dashboard.
-    2. Actions:
-     Create Quiz: Navigate to the quiz creation form to set up new assessments for a specific
-     course.
-     Upload Material: Upload lecture notes or links for students to access.
-     Create Course: Initialize new courses for the semester
+    1- Dashboard: Log in as an instructor to access the Instructor Dashboard.
+    2= Actions:
+    
+   Create Quiz: Navigate to the quiz creation form to set up new assessments for a specific
    course.
- Upload Material: Upload lecture notes or links for students to access.
+   
+   Upload Material: Upload lecture notes or links for students to access.
+   
+   Create Course: Initialize new courses for the semester
 
- ----------------------------------------------------------------------------------------------------------------
- Create Course: Initialize new courses for the semester
+   ----------------------------------------------------------------------------------------------------------------
+  
