@@ -56,6 +56,8 @@ AI Study Companion
    5. Access the App: Open your browser and navigate to the URL provided in the terminal (usually
    http://localhost:5173 ).
 
+   ----------------------------------------------------------------------------------------------------------------
+
  Usage Instructions and Examples
  
    Authentication (Demo Credentials)
@@ -67,6 +69,8 @@ AI Study Companion
    Instructor Login:
    Username: instructor
    Password: 123
+
+------------------------------------------------------------------------------------------------------------------
    
  Student Features
  
@@ -85,6 +89,8 @@ AI Study Companion
    AI Assistant: Type a prompt (e.g., "Explain React hooks") to see a demo response from the
    AI.
    View Quizzes: Access quizzes relevant to the course topics.
+
+   ----------------------------------------------------------------------------------------------------------------
    
  Instructor Features:
     1. Dashboard: Log in as an instructor to access the Instructor Dashboard.
@@ -95,4 +101,6 @@ AI Study Companion
      Create Course: Initialize new courses for the semester
    course.
  Upload Material: Upload lecture notes or links for students to access.
+
+ ----------------------------------------------------------------------------------------------------------------
  Create Course: Initialize new courses for the semester
