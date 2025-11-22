@@ -37,7 +37,8 @@ function ToDoList(){
             
             <div className="flex flex-col flex-shrink items-stretch col-start-11 col-span-2">
 
-            <button onClick={addTask} type="button" disabled={!inputValue} className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer"> Add a task</button>
+            <button onClick={addTask} type="button" disabled={!inputValue} className={`focus:outline-none text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ${!inputValue ? "bg-gray-400 cursor-not-allowed" : "bg-gray-700 hover:bg-red-800 cursor-pointer"} focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900`}>Add a task</button>
+
             <button onClick={clearAll} type="button" className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer"> Clear All</button>
             </div>
             
@@ -45,7 +46,8 @@ function ToDoList(){
             <h1 className=" font-bold text-gray-900 dark:text-white mb-4   md:mb-0 lg:text-3xl lg:row-start-1 lg:col-start-1 lg:justify-self-start lg:self-start">
                 To Do List
             </h1>
-
+            {!inputValue && (
+                <p className="text-red-600  text-sm mt-1">This field is required.</p>)}
             <input name="input" type="text" value={inputValue} placeholder=" Type here" className="bg-gray-200 ml-3 p-2 rounded  " onChange={(e) => setInputValue(e.target.value)}></input>
           
             <ul className="relative flex flex-col items-stretch gap-2 ml-3 p-2 ">

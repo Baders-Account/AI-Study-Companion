@@ -10,7 +10,7 @@ function PopUpCourses({ onClose }) {
     <div className="fixed inset-0  z-2 bg-opacity-40 backdrop-blur-sm flex place-content-around ">
       <div className="bg-gray-900  text-white rounded-lg  p-2 max-h-1/2 min-w-1/2 shadow-2xl">
         <button
-          className="ml-auto mb-4 block text-3xl font-bold hover:text-blue-400 hover:cursor-pointer"
+          className="ml-auto mb-4 block text-3xl font-bold hover:text-red-400 hover:cursor-pointer"
           onClick={onClose}
           
         >
@@ -32,7 +32,7 @@ function PopUpCourses({ onClose }) {
                             <li key={course.id} >
 
 
-                                <NavLink to={`/courses/${encodeURIComponent(course.courseName)}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center hover:bg-blue-900 hover:cursor-pointer"> {course.courseName}  </NavLink>
+                                <NavLink to={`/courses/${encodeURIComponent(course.courseName)}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center hover:bg-red-800 hover:cursor-pointer"> {course.courseName}  </NavLink>
                                 
                             </li>
                            

@@ -25,7 +25,7 @@ function Progress(){
                             <li key={course.id} className='grid grid-cols-2'>
 
 
-                                <NavLink to={`/courses/${encodeURIComponent(course.courseName)}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center"> {course.courseName} </NavLink>
+                                <NavLink to={`/courses/${encodeURIComponent(course.courseName)}`} className="border rounded-lg shadow-lg py-3 px-3 flex flex-row justify-center hover:cursor-pointer"> {course.courseName} </NavLink>
                                 
                                  <div className='col-start-2  place-self-start ' > <CircularProgress variant="determinate" value={25} />
                                 </div>

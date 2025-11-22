@@ -50,10 +50,11 @@ function Courses(){
                     
             <div className="flex flex-col gap-2 col-start-5 row-start-1 col-span-2 justify-self-end self-start">
 
-            <button type="button" onClick={addCourse} disabled={!inputValue} className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5    dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"> Add a course</button>
+            <button type="button" onClick={addCourse} disabled={!inputValue} className={`focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-white ${!inputValue ? "bg-gray-400 cursor-not-allowed" : "bg-gray-700 hover:bg-red-800 cursor-pointer"}`}>Add a course</button>
+
            
 
-            <button type="button" onClick={() => setShowAllCourses(true) } className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"> View Courses </button>
+            <button type="button" onClick={() => setShowAllCourses(true) } className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 hover:cursor-pointer"> View Courses </button>
         
             
             
@@ -64,9 +65,10 @@ function Courses(){
                 <h1 className=" font-bold text-gray-900 dark:text-white mb-4   md:mb-0 lg:text-3xl lg:row-start-1 lg:col-start-1 lg:justify-self-start lg:self-start">
                 Courses
             </h1>
-             
+             {!inputValue && (
+                <p className="text-red-600 text-sm mt-1">This field is required.</p>)}
              <input name="input" type="text" placeholder=" Type here" value={inputValue} onChange={(e) => setInputValue(e.target.value) } className="p-2 bg-gray-200  rounded-lg "></input>
-          
+
             <ul className="justify-items-start   flex  flex-col gap-8 font-bold text-lg ">
                 
                 {shared.courses !=null && shared.courses.length >0 ? (
@@ -84,7 +86,7 @@ function Courses(){
                                  </NavLink>
 
                                     {/*remove button*/ }
-                                 <button type="button" value={course.id} onClick={(e)=> { shared.setCourses(shared.courses.filter(course => (course.id != e.target.value)));console.log(`before removing ${courseAdded}`); if(courseAdded>0){setCourseAdded(courseAdded-1);}; console.log(`after removing ${courseAdded}`); }} className="ml-auto font-bold hover:text-blue-400 hover:cursor-pointer">remove</button>
+                                 <button type="button" value={course.id} onClick={(e)=> { shared.setCourses(shared.courses.filter(course => (course.id != e.target.value)));console.log(`before removing ${courseAdded}`); if(courseAdded>0){setCourseAdded(courseAdded-1);}; console.log(`after removing ${courseAdded}`); }} className="ml-auto font-bold hover:text-red-800 hover:cursor-pointer">remove</button>
                                 
                               
                             </li>
