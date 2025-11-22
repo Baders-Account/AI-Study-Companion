@@ -19,6 +19,7 @@ AI Study Companion
    3-Admin: Manages user accounts, content, and system settings.
    
  Team Members (Team 6 SWE363-03)
+ 
    Bader Almutairi - s202159390
    Faisal Alharbi - s202261000
    Alwaleed Alharthi - s202158850
