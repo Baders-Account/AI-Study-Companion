@@ -10,7 +10,7 @@ import PopUpCourses from "./studentComponents/PopUpCourses";
  
 
 function StudentDashboard() {
-    const [sharedData, setSharedData] = useState([]);
+    
     const { showAllCourses, setShowAllCourses } = useContext(ShowContext);
 
     return(
@@ -23,7 +23,7 @@ function StudentDashboard() {
             <ToDoList/>
               
         
-        </section>
+        </section> 
         
       
 
