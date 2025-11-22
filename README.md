@@ -93,6 +93,7 @@ AI Study Companion
    ----------------------------------------------------------------------------------------------------------------
    
  Instructor Features:
+ 
     1- Dashboard: Log in as an instructor to access the Instructor Dashboard.
     2= Actions:
     
