@@ -9,6 +9,10 @@ import { CircularProgress } from '@mui/material';
 function Progress(){
     const shared = useContext(CoursesContext)
     const limit = 3 // so that the courses does not overlap if had many courses added
+
+
+    // we need to check quizzes to know the progress made 
+    // 
     
     return(
         <section className="grid grid-cols-2 grid-rows-2 p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-82 max-h-100 bg-white dark:bg-gray-800 justify-center ">

@@ -5,7 +5,13 @@ import { Button } from "../../../components/Button";
 function ToDoList(){
     const [tasks, setTasks] = useState([]);
     const [inputValue, setInputValue] = useState('');
+
+
+    // a table for tasks
     
+    
+
+    // This should be a post method
     function addTask () {
             
             const newTask = {id: Date.now(), text:inputValue, completed: false };
@@ -23,6 +29,7 @@ function ToDoList(){
             console.log(tasks);
     };
 
+    
     function clearAll(){
         setTasks([]);
     };
