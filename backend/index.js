@@ -51,11 +51,12 @@ runConnection();
 
 
 // courses
+
 router.get("/courses", async (req, res)=>{
 
         //retrive courses     
 
-        try {
+    try {
     const coursesDB =  client.db('coursesDB');
     const courses = coursesDB.collection('courses')
     const data = await courses.find().toArray();
@@ -96,6 +97,10 @@ router.post("/tasks", (req, res)=>{
 
 
 
+app.use(cors({
+  origin: 'http://localhost:5173', // React dev server
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
 
 
 

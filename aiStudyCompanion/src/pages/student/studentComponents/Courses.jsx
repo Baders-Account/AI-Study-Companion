@@ -10,12 +10,43 @@ import PopUpCourses from "./PopUpCourses";
 import StudentDashboard from "../StudentDashboard";
 import { ShowContext } from "../../../App";
 
+
+
 function Courses(){
          const shared = useContext(CoursesContext) // courses are here
         const limit = 3; // so that the courses does not overlap if had many courses added
          const [courseAdded,setCourseAdded] =useState(1);         
         const [inputValue, setInputValue] = useState("");
         const { setShowAllCourses } = useContext(ShowContext);
+        const [errors, setError] = useState('');  // do them later
+        const [courses, setCourses] = useState([]);      
+        const [isLoading, setIsLoading] = useState(false);  
+        const url = "http://localhost:3000/api/courses"
+
+        useEffect(()=>{
+
+            const fetchCourses= async () =>{
+                try{
+                        const response = await fetch(url);
+                        if(!response.ok){
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        const result = await response.json();
+                        setCourses(result);
+                        console.log(result);
+                }
+                catch(err){
+                    console.log(err);
+                }
+
+                finally{
+
+                    console.log("loading")
+                }
+            }
+            fetchCourses()
+
+        },[courses])
         
 
 
@@ -71,9 +102,9 @@ function Courses(){
 
             <ul className="justify-items-start   flex  flex-col gap-8 font-bold text-lg ">
                 
-                {shared.courses !=null && shared.courses.length >0 ? (
+                {courses !=null && courses.length >0 ? (
                     
-                    shared.courses.slice(0,limit).map(course =>(
+                    courses.slice(0,limit).map(course =>(
                         
                             <li key={course.id} className="flex flex-row gap-8" >
 
@@ -86,7 +117,7 @@ function Courses(){
                                  </NavLink>
 
                                     {/*remove button*/ }
-                                 <button type="button" value={course.id} onClick={(e)=> { shared.setCourses(shared.courses.filter(course => (course.id != e.target.value)));console.log(`before removing ${courseAdded}`); if(courseAdded>0){setCourseAdded(courseAdded-1);}; console.log(`after removing ${courseAdded}`); }} className="ml-auto font-bold hover:text-red-800 hover:cursor-pointer">remove</button>
+                                 <button type="button" value={course.id} onClick={(e)=> { setCourses(courses.filter(course => (course.id != e.target.value)));console.log(`before removing ${courseAdded}`); if(courseAdded>0){setCourseAdded(courseAdded-1);}; console.log(`after removing ${courseAdded}`); }} className="ml-auto font-bold hover:text-red-800 hover:cursor-pointer">remove</button>
                                 
                               
                             </li>
