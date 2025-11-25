@@ -6,7 +6,7 @@ function ToDoList(){
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const url = "http://localhost:3000/api/tasks"
+    const url = "https://backend-phi-topaz.vercel.app/api/tasks"
 
     // fetch tasks only on mount
     useEffect(()=>{
