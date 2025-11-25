@@ -15,7 +15,7 @@ function Courses(){
     const { setShowAllCourses } = useContext(ShowContext);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);  
-    const url = "http://localhost:5173/api/courses"
+    const url = "https://backend-phi-topaz.vercel.app/api/courses"
 
     const addCourse = async () => {
         const userInput = inputValue;
