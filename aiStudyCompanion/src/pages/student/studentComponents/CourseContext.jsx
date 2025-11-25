@@ -6,7 +6,7 @@ function CourseContext({ children }) {
     const [courses, setCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const url = "https://backend-phi-topaz.vercel.app/api/courses";
+    const url = "http://localhost:5173/api/courses";
 
     useEffect(() => {
         const fetchCourses = async () => {
