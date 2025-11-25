@@ -1,41 +1,39 @@
-import React,{ createContext, useContext } from 'react';
-import { createRoot } from 'react-dom/client';
-import { useEffect, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from 'react';
+
 export const CoursesContext = React.createContext();
-import Courses from './Courses';
-import Progress from './Progress';
-function CourseContext({children}){
+
+function CourseContext({ children }) {
     const [courses, setCourses] = useState([]);
-     const url = "http://localhost:3000/api/courses"
-    useEffect(()=>{
-    
-                const fetchCourses= async () =>{
-                    try{
-                            const response = await fetch(url);
-                            if(!response.ok){
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                            const result = await response.json();
-                            setCourses(result);
-                            
-                    }
-                    catch(err){
-                        console.log(err);
-                    }
-    
-                    
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const url = "http://localhost:3000/api/courses";
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                fetchCourses()
-    
-            },[courses])
+                const result = await response.json();
+                setCourses(result);
+            } catch (err) {
+                console.log(err);
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchCourses();
+    }, []); // empty dependency array prevents infinite refetch
 
-    return(
-        <CoursesContext.Provider value={{courses, setCourses}}>
+    return (
+        <CoursesContext.Provider value={{ courses, setCourses, isLoading, error }}>
             {children}
-
         </CoursesContext.Provider>
-    );
-
+    ); 
 }
 
-export default CourseContext
+export default CourseContext;
