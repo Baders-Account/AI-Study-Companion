@@ -50,7 +50,7 @@ function ToDoList(){
             if (!response.ok){
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            // update tasks after successful add
+            
             const newTask = {_id: new Date().toString(), text: userInput, completed: false};
             setTasks(prev => [...prev, newTask]);
         }

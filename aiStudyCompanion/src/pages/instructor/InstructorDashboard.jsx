@@ -1,4 +1,4 @@
-import ToDoList from "../student/studentComponents/toDoList";
+import ToDoList from "../student/studentComponents/ToDoList";
 import Courses from "../student/studentComponents/Courses";
 import Progress from "../student/studentComponents/Progress";
 import { useContext, useState } from "react";
