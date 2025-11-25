@@ -1,9 +1,10 @@
-//require('dotenv').config();
+
+import dotenv from 'dotenv'
 import {MongoClient,ServerApiVersion } from 'mongodb'
 //const { MongoClient, ServerApiVersion } =  require('mongodb');
+dotenv.config();
 
-const uri = "mongodb+srv://baderDB:Safer200@cluster0.ywjjum4.mongodb.net/?appName=Cluster0"
-const client = new MongoClient(uri, {
+const client = new MongoClient(process.env.uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -12,7 +13,7 @@ const client = new MongoClient(uri, {
 });
 
 
-
+/*  just to check if the connectoin is there or not // ignore//
 async function runConnection() {
     try{
          console.log('Connecting to MongoDB…');
@@ -34,7 +35,7 @@ async function runConnection() {
 
 runConnection();
 
-
+*/
 
 
 async function coursesDB(){
