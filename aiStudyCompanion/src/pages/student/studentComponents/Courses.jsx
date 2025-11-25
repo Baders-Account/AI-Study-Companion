@@ -10,30 +10,61 @@ import PopUpCourses from "./PopUpCourses";
 import StudentDashboard from "../StudentDashboard";
 import { ShowContext } from "../../../App";
 
+
+
 function Courses(){
          const shared = useContext(CoursesContext) // courses are here
         const limit = 3; // so that the courses does not overlap if had many courses added
          const [courseAdded,setCourseAdded] =useState(1);         
         const [inputValue, setInputValue] = useState("");
         const { setShowAllCourses } = useContext(ShowContext);
+        const [errors, setError] = useState('');  // do them later
+       // const [courses, setCourses] = useState([]);      
+        const [isLoading, setIsLoading] = useState(false);  
+        const url = "http://localhost:3000/api/courses"
+      
         
+        const addCourse = async () => {
+            const userInput = inputValue
+            setInputValue('');
+            setCourseAdded(prev => prev + 1);
 
+            try {
+                const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                _id: Date.now(),
+                id:Date.now(),
+                courseName: userInput
+                    })
+                 });
 
-        function addCourse() {
-               
-                const newCourse = { id:Date.now() , courseName:inputValue}
-                setInputValue('');
-                console.log(`before adding ${courseAdded}`)
-                setCourseAdded(courseAdded+1);
-                shared.setCourses([...shared.courses,newCourse])
-                console.log(`after adding ${courseAdded}`)
-                
-                if(courseAdded>= limit){
-                    toast("Your course has been added, check view courses button to check all courses",{autoClose:3000})
-                }
+            if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // toast belongs *inside* the function
+            if (courseAdded + 1 >= limit) {
+            toast(
+                "Your course has been added, check view courses button to check all courses",
+                { autoClose: 3000 }
+            );
+            }
+
+        } catch (err) {
+            console.log(err);
         }
+        };
 
-     
+        const removeCourse= async()=>{
+
+        }
+        
+           
+                       
+       
+
 
     
     
@@ -86,7 +117,30 @@ function Courses(){
                                  </NavLink>
 
                                     {/*remove button*/ }
-                                 <button type="button" value={course.id} onClick={(e)=> { shared.setCourses(shared.courses.filter(course => (course.id != e.target.value)));console.log(`before removing ${courseAdded}`); if(courseAdded>0){setCourseAdded(courseAdded-1);}; console.log(`after removing ${courseAdded}`); }} className="ml-auto font-bold hover:text-red-800 hover:cursor-pointer">remove</button>
+                                 <button type="button" value={course.id} onClick={async (e)=> { 
+                                    console.log(`${course.id} === ${e.target.value}????`)
+                                    if(course.id == e.target.value){
+                                                try{
+                                                    
+                                                    const response =await  fetch(`${url}/${e.target.value}`,{
+                                                    method:'DELETE'
+
+
+
+                                                })
+                                                
+                                                if (!response.ok) {
+                                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                                                    }
+                                                                }
+                                                catch(err){
+                                                    console.log(err);
+                                                }
+                                    }; 
+                                    if(courseAdded>0){
+                                    setCourseAdded(courseAdded-1); 
+                                    console.log(`after removing ${courseAdded}`)};
+                                     }} className="ml-auto font-bold hover:text-red-800 hover:cursor-pointer">remove</button>
                                 
                               
                             </li>
