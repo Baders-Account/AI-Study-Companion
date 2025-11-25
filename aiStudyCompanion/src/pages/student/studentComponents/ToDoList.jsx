@@ -33,28 +33,81 @@ function ToDoList(){
     
 
     // This should be a post method
-    function addTask () {
-            
-            const newTask = {id: Date.now(), text:inputValue, completed: false };
+    const  addTask= async ()=> {
+        const userInput = inputValue    
+        setInputValue('');
+        try{
+                const response = await fetch(`${url}/add-todo`, {
+
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        _id: new Date(),
+                        text:userInput,
+                        completed: false
+                    } )
+
+                });
+                if (!response.ok){
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+           
+             
             
            
-            setTasks([...tasks, newTask]);
-            setInputValue('');
+            
+            
+
+            }
+            catch(err){
+                console.log(err);
+            }
     };
+
     // care for this too
-    const toggleComplete=(e) =>{
-            const id= Number(e.target.value) 
-            setTasks(tasks.map(task =>
-                task.id == id ? {...task, completed: !task.completed}: task
-            ));
-            console.log(e.target.value)
-            console.log(tasks);
+    const toggleComplete= async(e) =>{
+           
+            const specificTask= tasks.find(course=> course._id == e.target.value
+            )
+           
+            const isClicked = !specificTask.completed;
+           
+            try{
+                const response = await fetch(`${url}/toggle`, {
+                    method:'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: e.target.value,
+                        completed: isClicked
+                    } )
+                })
+                if (!response.ok){
+                     throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            }
+             catch(err){
+                console.log(err);
+            }
+            
     };
 
     // care for this 
-    function clearAll(){
-        setTasks([]);
-    };
+   const clearAll= async()=>{
+        
+        try{
+            const response = await fetch(`${url}/clearAll`,{
+                method:'DELETE'
+
+            })
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+                 }
+                  }
+             catch(err){
+                    console.log(err);
+                    }
+        };
     
 
     return(

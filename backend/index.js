@@ -38,9 +38,9 @@ router.post("/courses", async (req, res)=>{
         // add 
         
         const addedCourse = req.body;
-        console.log(`this is request body: ${addedCourse}`)
+        
         courses.insertOne(addedCourse);
-        console.log(`this is the course ${addedCourse}`)
+        
         res.sendStatus(201)
     
 })
@@ -72,15 +72,40 @@ router.get("/tasks", async(req, res)=>{
 })
 
 
-router.post("/tasks", (req, res)=>{
 
         // add 
+router.post('/tasks/add-todo', async(req,res)=>{
+             const newTask = req.body;
+             await tasks.insertOne(newTask);
+             res.sendStatus(201);
+
+})
+
+router.post('/tasks/toggle', async(req,res)=>{
+            
+            const {id, completed} = req.body
+            
+           
+           
+            
+            await tasks.updateOne({_id:id},{$set:{completed: completed} });
+            res.sendStatus(201);
+})
+
+       
+router.delete('/tasks/clearAll', async(req,res)=>{
+            
+        
+            
+            await tasks.deleteMany({});
+            res.sendStatus(201);
+})
+
 
 
 
         // remove
     
-})
 
 
 

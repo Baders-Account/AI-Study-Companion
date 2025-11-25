@@ -44,7 +44,7 @@ function Courses(){
             throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // toast belongs *inside* the function
+            
             if (courseAdded + 1 >= limit) {
             toast(
                 "Your course has been added, check view courses button to check all courses",
@@ -57,9 +57,7 @@ function Courses(){
         }
         };
 
-        const removeCourse= async()=>{
-
-        }
+ 
         
            
                        
