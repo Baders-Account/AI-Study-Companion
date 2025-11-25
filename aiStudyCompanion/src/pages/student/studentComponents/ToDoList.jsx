@@ -1,13 +1,34 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { Button } from "../../../components/Button";
 
 
 function ToDoList(){
     const [tasks, setTasks] = useState([]);
     const [inputValue, setInputValue] = useState('');
-
+    const url = "http://localhost:3000/api/tasks"
 
     // a table for tasks
+        useEffect(()=>{
+        
+                    const fetchTasks= async () =>{
+                        try{
+                                const response = await fetch(url);
+                                if(!response.ok){
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+                                const result = await response.json();
+                                setTasks(result);
+                                
+                        }
+                        catch(err){
+                            console.log(err);
+                        }
+        
+                        
+                    }
+                    fetchTasks();
+        
+                },[tasks])
     
     
 
@@ -20,6 +41,7 @@ function ToDoList(){
             setTasks([...tasks, newTask]);
             setInputValue('');
     };
+    // care for this too
     const toggleComplete=(e) =>{
             const id= Number(e.target.value) 
             setTasks(tasks.map(task =>
@@ -29,7 +51,7 @@ function ToDoList(){
             console.log(tasks);
     };
 
-    
+    // care for this 
     function clearAll(){
         setTasks([]);
     };
@@ -60,7 +82,7 @@ function ToDoList(){
             <ul className="relative flex flex-col items-stretch gap-2 ml-3 p-2 ">
                 
                 {tasks.length > 0 ? (tasks.map(task => (
-                    <li key={task.id} className=" flex flex-row gap-4 justify-around self-start" >
+                    <li key={task._id} className=" flex flex-row gap-4 justify-around self-start" >
                             
                             {task.completed ? (
                                 <div className="line-through">
@@ -77,7 +99,7 @@ function ToDoList(){
                             )
                             
                         }
-                            <input type="checkbox" value={task.id} onChange={toggleComplete}  ></input>
+                            <input type="checkbox" value={task._id} onChange={toggleComplete}  ></input>
                             </li>
                         
                     ))) : (

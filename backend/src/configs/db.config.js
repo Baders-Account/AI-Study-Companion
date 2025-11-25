@@ -51,9 +51,8 @@ async function coursesDB(){
 async function tasksDB(){
     try {
     const tasksDB =  client.db('tasksDB');
-    const tasks = tasksDB.collection('toDo')
-    const data = await tasks.find().toArray();
-    res.json(data);
+    const tasks = tasksDB.collection('toDo');
+    return tasks;
   } catch (err) {
      return err;
   }

@@ -17,16 +17,13 @@ function CourseContext({children}){
                             }
                             const result = await response.json();
                             setCourses(result);
-                            console.log(result);
+                            
                     }
                     catch(err){
                         console.log(err);
                     }
     
-                    finally{
-    
-                        console.log("loading")
-                    }
+                    
                 }
                 fetchCourses()
     
