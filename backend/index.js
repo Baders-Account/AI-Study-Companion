@@ -1,51 +1,19 @@
 
 
+import {courses, tasks} from './src/configs/db.config.js'   // mongoDB  
+import express from 'express'
+import cors from 'cors'
 
 
-// setting express
-const express = require('express');
-const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const app= express();
 const PORT = 3000; 
-require('dotenv').config();
+//require('dotenv').config();
 
 
 const router = express.Router();
 
-// mongoDB  
 
 
-const uri = "mongodb+srv://baderDB:Safer200@cluster0.ywjjum4.mongodb.net/?appName=Cluster0"
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-
-async function runConnection() {
-    try{
-         console.log('Connecting to MongoDB…');
-            await client.connect();  // <- important
-
-        console.log('Connected.');
-        const coursesDB =  client.db('coursesDB');
-        const courses = coursesDB.collection('courses').find();
-
-        // check if it works
-        
-
-    }
-    
-    catch (err) {
-    console.error("Connection error:", err);
-  }
-}
-
-runConnection();
 
 // router
 
@@ -57,8 +25,7 @@ router.get("/courses", async (req, res)=>{
         //retrive courses     
 
     try {
-    const coursesDB =  client.db('coursesDB');
-    const courses = coursesDB.collection('courses')
+   
     const data = await courses.find().toArray();
     res.json(data);
   } catch (err) {
