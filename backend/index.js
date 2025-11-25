@@ -127,7 +127,7 @@ router.delete('/tasks/clearAll', async(req,res)=>{
 
 app.use(express.json());  
 app.use(cors({
-  origin: 'http://localhost:5173', // React dev server
+  origin: 'https://backend-phi-topaz.vercel.app', // React dev server
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
