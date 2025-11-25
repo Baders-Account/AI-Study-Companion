@@ -1,4 +1,4 @@
-import ToDoList from "./studentComponents/toDoList";
+import ToDoList from "./studentComponents/ToDoList";
 import ActionCard from "./studentComponents/ActionCard";
 import Courses from "./studentComponents/Courses";
 import Progress from "./studentComponents/Progress";
