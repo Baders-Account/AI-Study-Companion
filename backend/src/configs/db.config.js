@@ -36,7 +36,16 @@ async function runConnection() {
 runConnection();
 
 */
-
+async function userDB(){
+    try{
+        const userDB = client.db('userDB');
+        const users =  userDB.collection('users');
+        return users; 
+    }
+    catch(err){
+        console.log(err);
+    }
+}
 
 async function coursesDB(){
     try {
