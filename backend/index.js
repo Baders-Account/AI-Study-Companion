@@ -123,12 +123,14 @@ router.delete('/tasks/clearAll', async(req,res)=>{
         // remove
     
 
-
+const deployedFrontendUrl = 'https://ai-study-companion-three.vercel.app';
+const localDevUrl = 'http://localhost:5173'; 
 
 app.use(express.json());  
+
 app.use(cors({
-  origin: 'http://localhost:5173', // React dev server
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: [deployedFrontendUrl, localDevUrl], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
 
