@@ -63,7 +63,7 @@ router.post("/courses", async (req, res)=>{
 
 router.delete('/courses/:id' ,async (req,res) =>{
         const removedID= Number(req.params.id)
-
+        console.log(removedID);
         await courses.deleteOne({_id: removedID})
         res.sendStatus(201);
 }
