@@ -39,7 +39,7 @@ function Courses(){
             }
 
             // update courses locally to prevent refetch
-            shared.setCourses(prev => [...prev, { _id: Date.now(), id: Date.now(), courseName: userInput }]);
+            shared.setCourses(prev => [...prev, { _id: Date.now(), courseName: userInput }]);
 
             if (courseAdded + 1 >= limit) {
                 toast(
