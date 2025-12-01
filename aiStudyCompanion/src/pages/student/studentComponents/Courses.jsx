@@ -66,7 +66,7 @@ function Courses(){
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             // remove course locally
-           
+           console.log(courseId);
             setCourseAdded(prev => Math.max(prev - 1, 0));
         } catch (err) {
             console.log(err);
