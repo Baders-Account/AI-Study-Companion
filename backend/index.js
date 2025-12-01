@@ -37,7 +37,7 @@ async function hashing(password){
 // courses
 
 router.get("/courses", async (req, res)=>{
-
+        
         //retrive courses     
 
     try {
@@ -50,7 +50,7 @@ router.get("/courses", async (req, res)=>{
 })
 
 router.post("/courses", async (req, res)=>{
-
+       
         // add 
         
         const addedCourse = req.body;

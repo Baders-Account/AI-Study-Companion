@@ -30,7 +30,6 @@ function Courses(){
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     _id: Date.now(),
-                    id: Date.now(),
                     courseName: userInput
                 })
             });
