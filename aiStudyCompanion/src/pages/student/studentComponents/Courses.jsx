@@ -38,8 +38,7 @@ function Courses(){
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // update courses locally to prevent refetch
-            shared.setCourses(prev => [...prev, { _id: Date.now(), courseName: userInput }]);
+           
 
             if (courseAdded + 1 >= limit) {
                 toast(
@@ -67,7 +66,7 @@ function Courses(){
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             // remove course locally
-            shared.setCourses(prev => prev.filter(course => course.id !== courseId));
+           
             setCourseAdded(prev => Math.max(prev - 1, 0));
         } catch (err) {
             console.log(err);
