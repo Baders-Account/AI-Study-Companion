@@ -90,7 +90,7 @@ function CreateQuiz() {
             disabled = {loading}
             className="px-5 py-2.5 rounded-lg bg-gray-700 text-white hover:bg-red-800 transition"
           >
-            {Loading ? "Saving..." : "Create"}
+            {loading ? "Saving..." : "Create"}
           </button>
           <button
             type="button"
