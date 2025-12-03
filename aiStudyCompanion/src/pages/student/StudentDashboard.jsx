@@ -17,7 +17,7 @@ function StudentDashboard() {
         
     
         
-        <section className="mt-9 sm:flex sm:flex-col md:flex md:flex-col  lg:grid lg:grid-flow-col  lg:grid-rows-12  lg:grid-cols-12  h-svh   ">
+        <section className="mt-9 sm:flex sm:flex-col md:flex md:flex-col  lg:grid lg:grid-flow-col  lg:grid-rows-12  lg:grid-cols-12  lg:h-svh   ">
 
         <section className=" row-start-1 col-start-7  col-span-5 row-span-2  justify-self-around">
             <ToDoList/>
@@ -35,7 +35,7 @@ function StudentDashboard() {
             
 
           
-       <section className="col-start-2 col-span-4 row-start-7 ">
+       <section className="col-start-2 col-span-4 lg:row-start-7   ">
 
             <Progress/> 
        </section>
