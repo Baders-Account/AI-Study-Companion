@@ -1,10 +1,12 @@
-import React, { useMemo, useState } from "react";
-import { getCollapsedList, SAMPLE_QUIZZES } from "../studentComponents/utils";
+import React, { useMemo, useState, useEffect } from "react";
 
+const URL = "https://backend-phi-topaz.vercel.app/api/quizz"
 
 function ViewQuiz() {
-const [quizzes] = useState(SAMPLE_QUIZZES);
+const [quizzes, setQuizzes] = useState(false);
 const [showAllQuizzes, setShowAllQuizzes] = useState(false);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState(null);
 
 
 const visibleQuizzes = useMemo(() => getCollapsedList(quizzes, showAllQuizzes, 3), [quizzes, showAllQuizzes]);
