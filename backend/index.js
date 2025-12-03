@@ -1,6 +1,6 @@
 
 
-import {courses, tasks} from './src/configs/db.config.js'   // mongoDB  
+import {courses, tasks, quizz} from './src/configs/db.config.js'   // mongoDB  
 import express from 'express'
 import cors from 'cors'
 import crypto from 'crypto'
@@ -70,6 +70,28 @@ router.delete('/courses/:id' ,async (req,res) =>{
 
 
 )
+
+//QUIZZES
+router.get("/quizz", async (req,res)=>{
+        try {
+                const data = await quizz.find().toArray();
+                res.json(data);
+        } catch (error) {
+                res.status(500).json({ error: err.message });
+        }
+});
+
+router.delete("quizz/:id", async (req,res) =>{
+        try {
+                const removedID= Number(req.params.id);
+                await quizz.deleteOne({id: removedID});
+                res.sendStatus(204); //NO CONTENT
+        } catch (error) {
+                res.status(500).json({ error: err.message });
+        }
+});
+
+// CREATE QUIZZ (Check the instructor)
 
 
 
