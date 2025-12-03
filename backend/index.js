@@ -92,7 +92,14 @@ router.delete("quizz/:id", async (req,res) =>{
 });
 
 // CREATE QUIZZ (Check the instructor)
-
+router.post("/quizz", async (req, res)=>{
+        try {
+                const newQuizz = req.body;
+                await quizz.insertOne(newQuizz);
+        } catch (error) {
+                res.status(500).json({ error: err.message });
+        }
+});
 
 
 
