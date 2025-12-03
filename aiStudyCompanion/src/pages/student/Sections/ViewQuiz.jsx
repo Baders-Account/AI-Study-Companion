@@ -3,7 +3,7 @@ import React, { useMemo, useState, useEffect } from "react";
 const URL = "https://backend-phi-topaz.vercel.app/api/quizz";
 
 function ViewQuiz() {
-const [quizzes, setQuizzes] = useState(false);
+const [quizzes, setQuizzes] = useState([]);
 const [showAllQuizzes, setShowAllQuizzes] = useState(false);
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState(null);
@@ -20,7 +20,8 @@ function getCollapsedList(list,showAll,limit){
 }
 
 const visibleQuizzes = useMemo(()=>{
-    getCollapsedList(quizzes,setQuizzes,3),[quizzes, showAllQuizzes]
+    getCollapsedList(quizzes,setQuizzes,3),
+    [quizzes, showAllQuizzes]
 });
 
 
@@ -40,7 +41,7 @@ useEffect(()=>{
             console.log(error);
             setError(error.message);
         }finally{
-            loading(false);
+            setLoading(false);
         }
         
     };
@@ -64,7 +65,7 @@ const handleDelete = async(id) =>{
         setError(error.message);
     }
     finally{
-        loading(false);
+        setLoading(false);
     }
 };
 

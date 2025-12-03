@@ -77,17 +77,17 @@ router.get("/quizz", async (req,res)=>{
                 const data = await quizz.find().toArray();
                 res.json(data);
         } catch (error) {
-                res.status(500).json({ error: err.message });
+                res.status(500).json({ error: error.message });
         }
 });
 
-router.delete("quizz/:id", async (req,res) =>{
+router.delete("/quizz/:id", async (req,res) =>{
         try {
                 const removedID= Number(req.params.id);
                 await quizz.deleteOne({id: removedID});
                 res.sendStatus(204); //NO CONTENT
         } catch (error) {
-                res.status(500).json({ error: err.message });
+                res.status(500).json({ error: error.message });
         }
 });
 
@@ -97,7 +97,7 @@ router.post("/quizz", async (req, res)=>{
                 const newQuizz = req.body;
                 await quizz.insertOne(newQuizz);
         } catch (error) {
-                res.status(500).json({ error: err.message });
+                res.status(500).json({ error: error.message });
         }
 });
 
