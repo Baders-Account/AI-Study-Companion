@@ -67,7 +67,7 @@ function Courses(){
             }
             // remove course locally
            console.log(courseId);
-           shared.setCourses(prev => prev.filter(course => course.id !== courseId));
+           shared.setCourses(prev => prev.filter(course => course._id !== courseId));
             setCourseAdded(prev => Math.max(prev - 1, 0));
         } catch (err) {
             console.log(err);
@@ -124,14 +124,14 @@ function Courses(){
                 <ul className="justify-items-start flex flex-col gap-8 font-bold text-lg">
                     {shared.courses && shared.courses.length > 0 ? (
                         shared.courses.slice(0,limit).map(course => (
-                            <li key={course.id} className="flex flex-row gap-8">
+                            <li key={course._id} className="flex flex-row gap-8">
                                 <NavLink to={`/courses/${encodeURIComponent(course.courseName)}`} className="border rounded-lg shadow-lg py-3 px-3 w-full">
                                     {course.courseName}
                                 </NavLink>
 
                                 <button
                                     type="button"
-                                    onClick={() => removeCourse(course.id)}
+                                    onClick={() => removeCourse(course._id)}
                                     disabled={isLoading}
                                     className="ml-auto font-bold hover:text-red-800 hover:cursor-pointer">
                                     remove
