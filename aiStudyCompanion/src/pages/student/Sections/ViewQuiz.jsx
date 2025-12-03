@@ -81,7 +81,7 @@ return (
       </header>
 
       {error && <p className="text-red-600 text-sm mb-2">Error: {error}</p>}
-      {isLoading && <p className="text-gray-500 text-sm mb-2">Loading...</p>}
+      {loading && <p className="text-gray-500 text-sm mb-2">Loading...</p>}
 
       <ul className="flex-1 space-y-2 overflow-auto pr-1">
         {visibleQuizzes.map((q) => (
@@ -103,7 +103,7 @@ return (
               <button
                 type="button"
                 onClick={() => handleDelete(q.id)}
-                disabled={isLoading}
+                disabled={loading}
                 className="text-xs text-red-700 hover:text-red-900"
               >
                 delete
@@ -112,7 +112,7 @@ return (
           </li>
         ))}
 
-        {!isLoading && visibleQuizzes.length === 0 && (
+        {!loading && visibleQuizzes.length === 0 && (
           <li className="text-sm text-gray-500">No quizzes available.</li>
         )}
       </ul>
