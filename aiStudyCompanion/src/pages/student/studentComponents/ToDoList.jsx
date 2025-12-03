@@ -114,11 +114,11 @@ function ToDoList(){
     };
 
     return(
-        <section className="relative grid grid-cols-12 grid-rows-2 gap-1 p-6 mt-16 items-stretch border rounded-lg shadow-lg w-full h-full bg-white dark:bg-gray-800 justify-center">
+        <section className="relative grid grid-cols-12 grid-rows-2 gap-1 p-6 mt-16 items-stretch border rounded-lg shadow-lg w-full  bg-white dark:bg-gray-800 justify-center">
             
-            <div className="flex flex-col flex-shrink items-stretch col-start-11 col-span-2">
+            <div className="flex flex-col flex-shrink items-stretch lg:col-start-11 sm:col-start-11 sm:col-span-4 md:col-span-8 md:col-start-10">
 
-                <button onClick={addTask} type="button" disabled={!inputValue || loading} className={`focus:outline-none text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ${!inputValue ? "bg-gray-400 cursor-not-allowed" : "bg-gray-700 hover:bg-red-800 cursor-pointer"} focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900`}>
+                <button onClick={addTask} type="button" disabled={!inputValue || loading} className={`focus:outline-none text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2    ${!inputValue ? "bg-gray-400 cursor-not-allowed" : "bg-gray-700 hover:bg-red-800 cursor-pointer"} focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900`}>
                     {loading ? 'Loading...' : 'Add a task'}
                 </button>
 

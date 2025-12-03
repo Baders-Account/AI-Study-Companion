@@ -67,6 +67,7 @@ function Courses(){
             }
             // remove course locally
            console.log(courseId);
+           shared.setCourses(prev => prev.filter(course => course.id !== courseId));
             setCourseAdded(prev => Math.max(prev - 1, 0));
         } catch (err) {
             console.log(err);
@@ -80,7 +81,7 @@ function Courses(){
         <section className="grid grid-cols-6 grid-rows-2  p-6 mt-16 md:gap-4 border rounded-lg shadow-2xl w-full min-h-82 max-h-100 bg-white dark:bg-gray-800 justify-center">
             <ToastContainer position="top-center" theme="dark" autoClose={3000}/>
 
-            <div className="flex flex-col gap-2 col-start-5 row-start-1 col-span-2 justify-self-end self-start">
+            <div className="flex flex-col gap-2 col-start-5 row-start-1 col-span-2  justify-self-end self-start">
                 <button
                     type="button"
                     onClick={addCourse}
@@ -97,17 +98,17 @@ function Courses(){
                 </button>
             </div>
 
-            <section className="row-start-1 col-start-1 col-span-4 justify-self-start flex flex-col gap-4">
+            <section className="row-start-1 col-start-1 col-span-4 justify-self-start flex flex-col gap-3 ">
                 <h1 className="font-bold text-gray-900 dark:text-white mb-4 md:mb-0 lg:text-3xl">
                     Courses
                 </h1>
 
                 {!inputValue && (
-                    <p className="text-red-600 text-sm mt-1">This field is required.</p>
+                    <p className="text-red-600 text-sm ">This field is required.</p>
                 )}
 
                 {error && (
-                    <p className="text-red-600 text-sm mt-1">Error: {error}</p>
+                    <p className="text-red-600 text-sm">Error: {error}</p>
                 )}
 
                 <input

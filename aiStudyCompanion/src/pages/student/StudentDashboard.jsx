@@ -17,9 +17,9 @@ function StudentDashboard() {
         
     
         
-        <section className="mt-9 sm:flex sm:flex-col md:flex md:flex-col  lg:grid lg:grid-flow-col  lg:grid-rows-12  lg:grid-cols-12      ">
+        <section className="mt-9 sm:flex sm:flex-col md:flex md:flex-col  lg:grid lg:grid-flow-col  lg:grid-rows-12  lg:grid-cols-12  h-svh   ">
 
-        <section className=" lg:row-start-1 lg:col-start-7  lg:col-span-5 lg:row-span-2  justify-self-around">
+        <section className=" row-start-1 col-start-7  col-span-5 row-span-2  justify-self-around">
             <ToDoList/>
               
         
@@ -35,21 +35,22 @@ function StudentDashboard() {
             
 
           
-       <section className="col-start-2 col-span-4 row-start-2 ">
+       <section className="col-start-2 col-span-4 row-start-7 ">
 
-            <Progress/>
+            <Progress/> 
        </section>
         <div className="mt-10">
 
           { showAllCourses !== null ? (
               
               
-              showAllCourses && (<PopUpCourses onClose={() => setShowAllCourses(false)} />)):(<h1>How</h1>)
+              showAllCourses && (<PopUpCourses onClose={() => setShowAllCourses(false)} />)):(<h1>is not working</h1>)
               
             }
             
             </div>
-        
+
+          
         
         
         
