@@ -27,7 +27,7 @@ function CourseContext({ children }) {
             }
         };
         fetchCourses();
-    }, [courses]); // empty dependency array prevents infinite refetch
+    }, []); 
 
     return (
         <CoursesContext.Provider value={{ courses, setCourses, isLoading, error }}>
