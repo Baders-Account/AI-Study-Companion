@@ -10,19 +10,19 @@ const [error, setError] = useState(null);
 
 // to show first three quizzez
 const limit = 3;
-function getCollapsedList(list,showAll,limit){
-    if(showAll){
-        return list;
-    }
-    else{
-        return list.slice(0,limit);
-    }
+
+function getCollapsedList(list, showAll, limit) {
+  if (showAll) {
+    return list;
+  } else {
+    return list.slice(0, limit);
+  }
 }
 
-const visibleQuizzes = useMemo(()=>{
-    getCollapsedList(quizzes,setQuizzes,3),
-    [quizzes, showAllQuizzes]
-});
+const visibleQuizzes = useMemo(
+  () => getCollapsedList(quizzes, showAllQuizzes, limit),
+  [quizzes, showAllQuizzes]
+);
 
 
 // fetch the quizzez
