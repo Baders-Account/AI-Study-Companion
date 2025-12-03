@@ -116,13 +116,13 @@ function ToDoList(){
     return(
         <section className="relative grid grid-cols-12 grid-rows-2 gap-1 p-6 mt-16 items-stretch border rounded-lg shadow-lg w-full  bg-white dark:bg-gray-800 justify-center">
             
-            <div className="flex flex-col flex-shrink items-stretch lg:col-start-11 sm:col-start-11 sm:col-span-4 md:col-span-8 md:col-start-10">
+            <div className="flex flex-col  gap-1 col-start-11  col-span-4 justify-self-end self-start">
 
-                <button onClick={addTask} type="button" disabled={!inputValue || loading} className={`focus:outline-none text-white font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2    ${!inputValue ? "bg-gray-400 cursor-not-allowed" : "bg-gray-700 hover:bg-red-800 cursor-pointer"} focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900`}>
+                <button onClick={addTask} type="button" disabled={!inputValue || loading} className={`focus:outline-none text-white font-medium rounded-lg text-sm px-5 py-2.5    ${!inputValue ? "bg-gray-400 cursor-not-allowed" : "bg-gray-700 hover:bg-red-800 cursor-pointer"} focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900`}>
                     {loading ? 'Loading...' : 'Add a task'}
                 </button>
 
-                <button onClick={clearAll} type="button" disabled={loading} className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2  mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer">
+                <button onClick={clearAll} type="button" disabled={loading} className="focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer">
                     {loading ? 'Loading...' : 'Clear All'}
                 </button>
             </div>
@@ -133,11 +133,11 @@ function ToDoList(){
                 </h1>
                 
                 {!inputValue && (
-                    <p className="text-red-600 text-sm mt-1">This field is required.</p>
+                    <p className="text-red-600 text-sm ">This field is required.</p>
                 )}
 
                 {error && (
-                    <p className="text-red-600 text-sm mt-1">Error: {error}</p>
+                    <p className="text-red-600 text-sm">Error: {error}</p>
                 )}
 
                 <input name="input" type="text" value={inputValue} placeholder=" Type here" className="bg-gray-200 ml-3 p-2 rounded" onChange={(e) => setInputValue(e.target.value)}></input>
