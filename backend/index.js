@@ -37,7 +37,7 @@ async function hashing(password){
 // courses
 
 router.get("/courses", async (req, res)=>{
-
+        
         //retrive courses     
 
     try {
@@ -50,7 +50,7 @@ router.get("/courses", async (req, res)=>{
 })
 
 router.post("/courses", async (req, res)=>{
-
+       
         // add 
         
         const addedCourse = req.body;
@@ -63,8 +63,8 @@ router.post("/courses", async (req, res)=>{
 
 router.delete('/courses/:id' ,async (req,res) =>{
         const removedID= Number(req.params.id)
-
-        await courses.deleteOne({id: removedID})
+        console.log(removedID);
+        await courses.deleteOne({_id: removedID})
         res.sendStatus(201);
 }
 

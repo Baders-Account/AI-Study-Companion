@@ -35,7 +35,7 @@ function App() {
     <CourseContext>
       <ShowContext.Provider value={{ showAllCourses, setShowAllCourses }}>
         <BrowserRouter>
-          <NavBar />
+          <NavBar /> 
 
           <Routes>
 

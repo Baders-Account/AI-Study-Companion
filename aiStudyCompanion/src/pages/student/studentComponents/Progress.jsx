@@ -15,7 +15,7 @@ function Progress(){
     // 
     
     return(
-        <section className="grid grid-cols-2 grid-rows-2 p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-82 max-h-100 bg-white dark:bg-gray-800 justify-center ">
+        <section className="grid grid-cols-2 grid-rows-2 p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-82 max-h-90 bg-white dark:bg-gray-800 justify-center ">
                 
             <ul className="justify-items-start col-start-1 col-end-2  flex flex-col gap-4 font-bold text-lg">
                 <h1 className=" font-bold text-gray-900 dark:text-white mb-4   md:mb-0 lg:text-3xl lg:row-start-1 lg:col-start-1 lg:justify-self-start lg:self-start">
