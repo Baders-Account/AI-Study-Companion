@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 
-const URL = "https://backend-phi-topaz.vercel.app/api/quizz"
+const URL = "https://backend-phi-topaz.vercel.app/api/quizz";
 
 function ViewQuiz() {
 const [quizzes, setQuizzes] = useState(false);
