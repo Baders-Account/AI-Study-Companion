@@ -61,13 +61,26 @@ AI Study Companion
  Usage Instructions and Examples
  
    Authentication (Demo Credentials)
+   
    The application uses hardcoded demo credentials for login purposes. You can use the following
    accounts to explore the different dashboards:
+   
    Student Login:
+   
    Username: student
+   
    Password: 123
+   
    Instructor Login:
+   
    Username: instructor
+   
+   Password: 123
+
+   admin Login:
+   
+   Username: admin
+   
    Password: 123
 
 ------------------------------------------------------------------------------------------------------------------
