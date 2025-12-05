@@ -33,6 +33,10 @@ function StudentDashboard() {
             <Courses  />
             </section>
             
+            <section className="col-start-2 col-span-4 row-start-2 row-end-2">
+                <ActionCard />
+            </section>
+            
 
           
        <section className="col-start-2 col-span-4 lg:row-start-7   ">

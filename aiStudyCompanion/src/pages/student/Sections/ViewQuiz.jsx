@@ -7,6 +7,8 @@ const [quizzes, setQuizzes] = useState([]);
 const [showAllQuizzes, setShowAllQuizzes] = useState(false);
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState(null);
+const [expandedId, setExpandedId] = useState(null);
+const [details, setDetails] = useState({});
 
 // to show first three quizzez
 const limit = 3;
@@ -48,7 +50,23 @@ useEffect(()=>{
     fetchQuizzes()
 },[]);
 
-// delete the Quiz
+const openQuiz = async(id) =>{
+    if(details[id]){ setExpandedId(expandedId === id ? null : id); return; }
+    setLoading(true);
+    setError(null);
+    try{
+        const res = await fetch(`${URL}/${id}/details`);
+        if(!res.ok){ throw new Error(`HTTP error! status: ${res.status}`) }
+        const doc = await res.json();
+        setDetails(prev => ({...prev, [id]: doc}));
+        setExpandedId(id);
+    } catch(err){
+        setError(err.message);
+    } finally{
+        setLoading(false);
+    }
+};
+
 const handleDelete = async(id) =>{
     setLoading(true);
     setError(null);
@@ -61,7 +79,6 @@ const handleDelete = async(id) =>{
         }
         setQuizzes((prev) => prev.filter((q)=> q.id !== id));
     } catch (error) {
-        console.log(error);
         setError(error.message);
     }
     finally{
@@ -93,14 +110,14 @@ return (
             </div>
 
             <div className="flex items-center gap-2">
-              <a
-                href={q.quizLink}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => openQuiz(q.id)}
+                disabled={loading}
                 className="text-sm underline"
               >
                 Open
-              </a>
+              </button>
               <button
                 type="button"
                 onClick={() => handleDelete(q.id)}
@@ -110,6 +127,22 @@ return (
                 delete
               </button>
             </div>
+            {expandedId === q.id && details[q.id] && (
+              <div className="mt-3 text-sm">
+                {details[q.id].questions?.map((item, idx) => (
+                  <div key={idx} className="mb-2">
+                    <p className="font-medium">{idx+1}. {item.question}</p>
+                    <ul className="ml-4 list-disc">
+                      <li>A. {item.options?.A}</li>
+                      <li>B. {item.options?.B}</li>
+                      <li>C. {item.options?.C}</li>
+                      <li>D. {item.options?.D}</li>
+                    </ul>
+                    <p className="text-xs text-gray-500">Answer: {item.answer}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </li>
         ))}
 

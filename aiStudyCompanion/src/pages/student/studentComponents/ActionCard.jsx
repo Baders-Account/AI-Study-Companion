@@ -1,6 +1,9 @@
 
+import { useNavigate } from "react-router-dom";
 
 function ActionCard(){
+
+    const navigate = useNavigate();
 
     return(
        <section className="relative grid grid-cols-2 grid-rows-3 md:flex-shrink p-6 mt-16 md:gap-4 border rounded-lg shadow-lg w-full min-h-64 bg-white dark:bg-gray-800 justify-center lg:gap-6">
@@ -37,6 +40,7 @@ function ActionCard(){
 
     <button 
       type="button"
+      onClick={() => navigate("/courses/All%20Quizzes")}
       className="w-full md:w-auto focus:outline-none text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 cursor-pointer transition-colors duration-200"
     >
       View Quizzes
