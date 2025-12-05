@@ -90,6 +90,7 @@ router.get("/notes", async (req,res)=>{
 router.post("/notes", async (req, res)=>{
         try {
                 const newNote = req.body;
+                newNote.courseName = String(newNote.courseName);
                 const result = await notes.insertOne(newNote);
                 res.status(201).json({
                         message: "Note created",
@@ -218,9 +219,6 @@ app.use("/api", router);
 
 app.listen(PORT, ()=>{
     console.log(`Server running on http://localhost:${PORT}`)
-
-
-
 
 })
 
