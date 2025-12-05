@@ -203,6 +203,11 @@ router.delete('/tasks/clearAll', async(req,res)=>{
 
 
 
+// Debug middleware to log requests
+app.use((req, res, next) => {
+    console.log(`[${req.method}] ${req.path}`);
+    next();
+});
 
 
 // Root route for health check
@@ -210,11 +215,6 @@ app.get("/", (req, res) => {
     res.json({ message: "Backend API is running", status: "ok" });
 });
 
-// Debug middleware to log requests
-app.use((req, res, next) => {
-    console.log(`[${req.method}] ${req.path}`);
-    next();
-});
 
 // All requests to API begin with /api
 app.use("/api", router);
@@ -233,11 +233,7 @@ export const config = {
 };
 export default serverless(app);
 
-// Local dev only
-if (process.env.NODE_ENV === "development" || !process.env.VERCEL) {
-    app.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
-    });
+
 }
 
 
