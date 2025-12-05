@@ -234,6 +234,6 @@ export const config = {
 export default serverless(app);
 
 
-}
+
 
 
