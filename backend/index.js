@@ -203,12 +203,14 @@ router.delete('/tasks/clearAll', async(req,res)=>{
 const deployedFrontendUrl = 'https://ai-study-companion-three.vercel.app';
 const localDevUrl = 'http://localhost:5173'; 
 
-app.use(express.json());  
-
 app.use(cors({
     origin: [deployedFrontendUrl, localDevUrl], 
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
+
+
+app.use(express.json());  
+
 
 
 
@@ -240,6 +242,8 @@ if(process.env.NODE_ENV === 'development' || !process.env.VERCEL){
     app.listen(PORT, ()=>{
         console.log(`Server running on http://localhost:${PORT}`)
     });
+
+
 }
 
 
