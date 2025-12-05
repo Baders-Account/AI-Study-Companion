@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { isValidUrl, buildNote, getCollapsedList } from "../studentComponents/utils";
 
-const URL = "https://backend-phi-topaz.vercel.app/api/notes";
+const URL = "https://backend-phi-topaz.vercel.app/api/notes"
 
 function CreateViewNotes({ courseName }) {
   const [notes, setNotes] = useState([]);

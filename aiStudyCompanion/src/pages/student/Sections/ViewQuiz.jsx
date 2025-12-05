@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 import  {getCollapsedList}  from "../studentComponents/utils";
 
 
-const URL = "https://backend-phi-topaz.vercel.app/api/quizz";
+const URL = "https://backend-phi-topaz.vercel.app/api/quizz"
 
 function ViewQuiz() {
 const [quizzes, setQuizzes] = useState([]);
