@@ -1,57 +1,135 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { isValidUrl, buildNote, getCollapsedList } from "../studentComponents/utils";
 
- function CreateViewNotes() {
-  const [notes, setNotes] = useState([
-    buildNote("Intro to React – Cheatsheet", "https://react.dev/learn"),
-    buildNote("Tailwind Quick Ref", "https://tailwindcss.com/docs"),
-    buildNote(
-      "JS Array Methods",
-      "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array"
-    ),
-    buildNote("Git Basics", "https://git-scm.com/docs"),
-  ]);
+const URL = "https://backend-phi-topaz.vercel.app/api/notes";
+
+function CreateViewNotes({ courseName }) {
+  const [notes, setNotes] = useState([]);
   const [noteName, setNoteName] = useState("");
   const [noteUrl, setNoteUrl] = useState("");
   const [showAllNotes, setShowAllNotes] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [noteError, setNoteError] = useState("");
 
+  // fetch the notes
+  useEffect(() => {
+    const fetchNotes = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await fetch(
+          `${URL}?courseName=${encodeURIComponent(courseName)}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        setNotes(result);
+      } catch (error) {
+        console.log(error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (courseName) {
+      fetchNotes();
+    }
+  }, [courseName]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setNoteError("");
+    setError("");
+
+    if (!noteName.trim() || !noteUrl.trim()) {
+      setNoteError("Both name and URL are required.");
+      return;
+    }
+
+    if (!isValidUrl(noteUrl.trim())) {
+      setNoteError("Please enter a valid URL (https://...).");
+      return;
+    }
+
+    const baseNote = buildNote(noteName.trim(), noteUrl.trim());
+
+    // extend it with courseName and createdAt
+    const newNote = {
+      ...baseNote,
+      courseName,
+      createdAt: new Date().toISOString(),
+    };
+
+    // optimistic update
+    setNotes((prev) => [newNote, ...prev]);
+    setNoteName("");
+    setNoteUrl("");
+
+    try {
+      const res = await fetch(URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newNote),
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to create note");
+
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setError("");
+    const previous = notes;
+    setNotes((prev) => prev.filter((n) => n.id !== id));
+
+    try {
+      const res = await fetch(`${URL}/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok && res.status !== 204) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to delete note");
+      setNotes(previous);
+    }
+  };
+
   const visibleNotes = useMemo(
-    () => getCollapsedList(notes, showAllNotes, 3),
+    () => getCollapsedList(notes, showAllNotes),
     [notes, showAllNotes]
   );
 
-  function handleAddNote(e) {
-    e.preventDefault();
-    setNoteError("");
-    if (!noteName.trim() || !noteUrl.trim()) {
-      setNoteError("Both fields are required.");
-      return;
-    }
-    if (!isValidUrl(noteUrl)) {
-      setNoteError("Please enter a valid URL (e.g., https://example.com).");
-      return;
-    }
-    setNotes((prev) => [buildNote(noteName.trim(), noteUrl.trim()), ...prev]);
-    setNoteName("");
-    setNoteUrl("");
-  }
-
   return (
-    <article className="flex flex-col rounded-2xl border shadow-lg p-5 bg-white dark:bg-gray-800">
+    <div className="flex flex-col rounded-2xl border shadow-lg p-5 bg-white dark:bg-gray-800">
       <header className="mb-4">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Create Note & View Notes
         </h2>
         <p className="text-sm text-gray-500">
-          Add a note (name + link).
+          Add a note (name + link) for {courseName}.
         </p>
       </header>
 
-      <form onSubmit={handleAddNote} className="space-y-3 mb-4">
+      {error && (
+        <p className="mb-2 text-sm text-red-600">
+          {error}
+        </p>
+      )}
+
+      <form onSubmit={handleSubmit} className="mb-4 space-y-2">
         <input
           type="text"
-          placeholder="Note name"
+          placeholder="Note title"
           value={noteName}
           onChange={(e) => setNoteName(e.target.value)}
           className="w-full rounded-lg bg-gray-100 dark:bg-gray-700 p-2"
@@ -66,15 +144,22 @@ import { isValidUrl, buildNote, getCollapsedList } from "../studentComponents/ut
         {noteError && <p className="text-sm text-red-600">{noteError}</p>}
         <button
           type="submit"
-          className="w-full text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+          className="w-full text-white bg-gray-700 hover:bg-red-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
         >
           Create Note
         </button>
       </form>
 
+      {loading && notes.length === 0 && (
+        <p className="text-sm text-gray-500">Loading notes...</p>
+      )}
+
       <ul className="flex-1 space-y-2 overflow-auto pr-1">
         {visibleNotes.map((n) => (
-          <li key={n.id} className="rounded-lg border p-3">
+          <li
+            key={n.id}
+            className="rounded-lg border p-3 flex justify-between items-start gap-2"
+          >
             <a
               href={n.url}
               target="_blank"
@@ -83,11 +168,19 @@ import { isValidUrl, buildNote, getCollapsedList } from "../studentComponents/ut
             >
               {n.name}
             </a>
+            <button
+              type="button"
+              onClick={() => handleDelete(n.id)}
+              className="text-xs text-red-600 hover:underline"
+            >
+              Delete
+            </button>
           </li>
         ))}
-        {visibleNotes.length === 0 && (
+
+        {!loading && visibleNotes.length === 0 && (
           <li className="text-sm text-gray-500">
-            No notes yet. Add your first above.
+            No notes yet for this course.
           </li>
         )}
       </ul>
@@ -96,11 +189,13 @@ import { isValidUrl, buildNote, getCollapsedList } from "../studentComponents/ut
         <button
           type="button"
           onClick={() => setShowAllNotes((s) => !s)}
-          className="w-full text-white bg-gray-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+          className="w-full text-white bg-gray-700 hover:bg-red-600 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
         >
           {showAllNotes ? "Show first 3" : "View all notes"}
         </button>
       </div>
-    </article>
+    </div>
   );
-}export default CreateViewNotes
+}
+
+export default CreateViewNotes;
