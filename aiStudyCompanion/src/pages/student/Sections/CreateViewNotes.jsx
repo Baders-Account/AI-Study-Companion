@@ -105,7 +105,7 @@ function CreateViewNotes({ courseName }) {
   };
 
   const visibleNotes = useMemo(
-    () => getCollapsedList(notes, showAllNotes),
+    () => getCollapsedList(notes, showAllNotes,3),
     [notes, showAllNotes]
   );
 

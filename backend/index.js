@@ -90,7 +90,11 @@ router.get("/notes", async (req,res)=>{
 router.post("/notes", async (req, res)=>{
         try {
                 const newNote = req.body;
-                await notes.insertOne(newNote);
+                const result = await notes.insertOne(newNote);
+                res.status(201).json({
+                        message: "Note created",
+                        insertedId: result.insertedId,
+                });
         } catch (error) {
                 console.error('POST /notes error:', error);
                 res.status(500).json({ error: error.message });
