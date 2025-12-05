@@ -71,50 +71,55 @@ router.delete('/courses/:id' ,async (req,res) =>{
 
 )
 
-// ================== NOTES ROUTES ==================
 
-// GET /api/notes?courseName=...
-router.get("/notes", async (req, res) => {
-  try {
-    const { courseName } = req.query;
-
-    // if courseName is passed, filter by it; otherwise return all notes
-    const query = courseName ? { courseName: String(courseName) } : {};
-
-    const data = await notes.find(query).toArray();
-    res.json(data);
-  } catch (error) {
-    console.error("GET /notes error:", error);
-    res.status(500).json({ error: "Failed to fetch notes" });
-  }
+//NOTES
+router.get("/notes", async (req,res)=>{
+        try {
+                const {courseName} = req.query;
+                const filter = {};
+                if (courseName){
+                        filter.courseName = courseName;
+                }
+                const data = await notes.find(filter).toArray();
+                res.json(data);
+        } catch (error) {
+                console.error('GET /notes error:', error);
+                res.status(500).json({ error: error.message });
+        }
 });
 
-// POST /api/notes
-router.post("/notes", async (req, res) => {
-  try {
-    const newNote = req.body;
+router.post("/notes", async (req, res)=>{
+        try {
+                const newNote = req.body;
+                newNote.courseName = String(newNote.courseName);
+                const result = await notes.insertOne(newNote);
+                res.status(201).json({
+                        message: "Note created",
+                        insertedId: result.insertedId,
+                });
+        } catch (error) {
+                console.error('POST /notes error:', error);
+                res.status(500).json({ error: error.message });
+        }
+});
 
-    if (!newNote || !newNote.name || !newNote.url || !newNote.courseName) {
-      return res
-        .status(400)
-        .json({ error: "name, url and courseName are required" });
+router.delete('/notes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await notes.deleteOne({ id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Note not found' });
     }
 
-    // make sure courseName is stored as a string
-    newNote.courseName = String(newNote.courseName);
-
-    const result = await notes.insertOne(newNote);
-
-    // send back the saved note (including _id)
-    res.status(201).json({
-      ...newNote,
-      _id: result.insertedId,
-    });
-  } catch (error) {
-    console.error("POST /notes error:", error);
-    res.status(500).json({ error: "Failed to create note" });
+    res.sendStatus(204);
+  } catch (err) {
+    console.error('DELETE /notes/:id error:', err);
+    res.status(500).json({ message: 'Failed to delete note' });
   }
 });
+
 
 
 
