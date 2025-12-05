@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const URL = "https://backend-phi-topaz.vercel.app/api/quizz";
+const URL = "https://backend-phi-topaz.vercel.app/api/quizz/ai-create";
 
 
 function CreateQuiz() {
@@ -9,7 +9,7 @@ function CreateQuiz() {
   const [form, setForm] = useState({
     quizName: "",
     course: "",
-    quizLink: "",
+    notesText: "",
   });
 
   function handleChange(e) {
@@ -24,19 +24,55 @@ function CreateQuiz() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    
+    // Validate form data before sending
+    if(!form.quizName.trim() || !form.course.trim() || !form.notesText.trim()){
+      setError("All fields are required and cannot be empty.");
+      setLoading(false);
+      return;
+    }
+    
     try {
       const response = await fetch(URL,{
         method: "POST",
         headers:{"Content-Type": "application/json"},
-        body: JSON.stringify(form),
+        body: JSON.stringify({ 
+          quizName: form.quizName.trim(), 
+          course: form.course.trim(), 
+          notesText: form.notesText.trim() 
+        }),
       });
-      if(!response.ok){
-        throw new Error(`HTTP error! status: ${response.status}`);
+      
+      // Check content type before parsing
+      const contentType = response.headers.get("content-type");
+      let data;
+      
+      if(contentType && contentType.includes("application/json")){
+        // Response is JSON, parse it
+        data = await response.json();
+      } else {
+        // Response is not JSON (likely HTML error page)
+        const text = await response.text();
+        throw new Error(`Server returned ${response.status} error. The API endpoint may not be available.`);
       }
-      navigate("/instructor"); // go back after submit
+      
+      if(!response.ok){
+        // Get error message from response body
+        const errorMessage = data.error || `HTTP error! status: ${response.status}`;
+        throw new Error(errorMessage);
+      }
+      
+      // Success - navigate to instructor dashboard
+      navigate("/instructor");
     } catch (error) {
-      console.log(error);
-      setError(error.message);
+      // Handle network errors, JSON parsing errors, or API errors
+      if(error.name === 'TypeError' && error.message.includes('fetch')){
+        setError("Network error. Please check your internet connection and ensure the backend server is running.");
+      } else if(error.message.includes('Unexpected token') || error.message.includes('JSON')){
+        setError("Server error: The backend returned an invalid response. Please check if the API endpoint is correct and the server is running.");
+      } else {
+        setError(error.message || "An unexpected error occurred. Please try again.");
+      }
     }finally{
       setLoading(false);
     }
@@ -45,7 +81,12 @@ function CreateQuiz() {
   return (
     <main className="max-w-2xl mx-auto mt-12 p-6 bg-white dark:bg-gray-800 rounded-2xl shadow">
       <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Create Quiz</h1>
-      {error && <p className="text-red-600 text-sm mb-2">Error: {error}</p>}
+      {error && (
+        <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <p className="text-red-600 dark:text-red-400 font-medium">Error: {error}</p>
+          <p className="text-red-500 dark:text-red-500 text-sm mt-1">Please check your inputs and try again.</p>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label className="block text-sm font-medium mb-2">Quiz Name</label>
@@ -72,14 +113,13 @@ function CreateQuiz() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Quiz Link</label>
-          <input
-            type="url"
-            name="quizLink"
-            value={form.quizLink}
+          <label className="block text-sm font-medium mb-2">Notes Text</label>
+          <textarea
+            name="notesText"
+            value={form.notesText}
             onChange={handleChange}
-            className="w-full border rounded-lg px-3 py-2"
-            placeholder="https://..."
+            className="w-full border rounded-lg px-3 py-2 h-40"
+            placeholder="Paste notes to generate questions"
             required
           />
         </div>
