@@ -17,7 +17,7 @@ function StudentDashboard() {
         
     
         
-        <section className="mt-9 sm:flex sm:flex-col md:flex md:flex-col  lg:grid lg:grid-flow-col  lg:grid-rows-12  lg:grid-cols-12  lg:h-svh   ">
+        <section className="mt-9 flex flex-col lg:grid lg:grid-flow-col  lg:auto-rows-auto  lg:grid-cols-12  lg:h-svh lg:auto-rows-auto  ">
 
         <section className=" row-start-1 col-start-7  col-span-5 row-span-2  justify-self-around">
             <ToDoList/>
