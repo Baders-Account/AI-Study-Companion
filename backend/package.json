@@ -19,6 +19,7 @@
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
     "nodemon": "^3.1.11",
-    "openai": "^4.104.0"
+    "openai": "^4.104.0",
+    "serverless-http": "^4.0.0"
   }
 }

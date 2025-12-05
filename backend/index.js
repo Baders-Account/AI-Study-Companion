@@ -229,19 +229,26 @@ app.use((req, res, next) => {
 // All requests to API begin with /api
 app.use("/api", router);
 
-// Fallback for any unmatched routes
+// Fallback routes
 app.use((req, res) => {
     res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });
 });
 
-// Export handler for Vercel serverless functions
-export default app;
+// Vercel serverless handler
+import serverless from "serverless-http";
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+};
+export default serverless(app);
 
-// For local development
-if(process.env.NODE_ENV === 'development' || !process.env.VERCEL){
-    app.listen(PORT, ()=>{
-        console.log(`Server running on http://localhost:${PORT}`)
+// Local dev only
+if (process.env.NODE_ENV === "development" || !process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
     });
+}
 
 
 }
