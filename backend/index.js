@@ -32,6 +32,17 @@ async function hashing(password){
 
 
 // router
+const deployedFrontendUrl = 'https://ai-study-companion-three.vercel.app';
+const localDevUrl = 'http://localhost:5173'; 
+
+app.use(cors({
+    origin: [deployedFrontendUrl, localDevUrl], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
+
+
+app.use(express.json());  
+
 
 
 
@@ -199,17 +210,6 @@ router.delete('/tasks/clearAll', async(req,res)=>{
 
         // remove
     
-
-const deployedFrontendUrl = 'https://ai-study-companion-three.vercel.app';
-const localDevUrl = 'http://localhost:5173'; 
-
-app.use(cors({
-    origin: [deployedFrontendUrl, localDevUrl], 
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
-}));
-
-
-app.use(express.json());  
 
 
 
