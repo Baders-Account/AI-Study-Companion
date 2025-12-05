@@ -1,6 +1,6 @@
 
 
-import {courses, tasks, quizz} from './src/configs/db.config.js'   // mongoDB  
+import {courses, tasks, quizz, notes} from './src/configs/db.config.js'   // mongoDB  
 import express from 'express'
 import cors from 'cors'
 import crypto from 'crypto'
@@ -70,6 +70,50 @@ router.delete('/courses/:id' ,async (req,res) =>{
 
 
 )
+
+//NOTES
+router.get("/notes", async (req,res)=>{
+        try {
+                const {courseName} = req.query;
+                const filter = {};
+                if (courseName){
+                        filter.courseName = courseName;
+                }
+                const data = await notes.find(filter).toArray();
+                res.json(data);
+        } catch (error) {
+                console.error('GET /notes error:', error);
+                res.status(500).json({ error: error.message });
+        }
+});
+
+router.post("/notes", async (req, res)=>{
+        try {
+                const newNote = req.body;
+                await notes.insertOne(newNote);
+        } catch (error) {
+                console.error('POST /notes error:', error);
+                res.status(500).json({ error: error.message });
+        }
+});
+
+router.delete('/notes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await notes.deleteOne({ id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Note not found' });
+    }
+
+    res.sendStatus(204);
+  } catch (err) {
+    console.error('DELETE /notes/:id error:', err);
+    res.status(500).json({ message: 'Failed to delete note' });
+  }
+});
+
 
 //QUIZZES
 router.get("/quizz", async (req,res)=>{

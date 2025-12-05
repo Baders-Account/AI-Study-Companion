@@ -79,9 +79,20 @@ async function quizDB() {
   }
 }
 
+async function notesDB() {
+  try {
+    const notesDB = client.db("notesDB");
+    const notes = notesDB.collection("notes");
+    return notes;
+  } catch (error) {
+    return console.log(error);
+  }
+}
+
 
 
 
 export const courses = await coursesDB();  // this is the courses collection
 export const tasks = await tasksDB();
 export const quizz = await quizDB();
+export const notes = await notesDB();
