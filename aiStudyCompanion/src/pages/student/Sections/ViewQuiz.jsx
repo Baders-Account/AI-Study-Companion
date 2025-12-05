@@ -1,4 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
+import  getCollapsedList  from "../studentComponents/utils";
+
 
 const URL = "https://backend-phi-topaz.vercel.app/api/quizz";
 
@@ -10,14 +12,6 @@ const [error, setError] = useState(null);
 
 // to show first three quizzez
 const limit = 3;
-
-function getCollapsedList(list, showAll, limit) {
-  if (showAll) {
-    return list;
-  } else {
-    return list.slice(0, limit);
-  }
-}
 
 const visibleQuizzes = useMemo(
   () => getCollapsedList(quizzes, showAllQuizzes, limit),
