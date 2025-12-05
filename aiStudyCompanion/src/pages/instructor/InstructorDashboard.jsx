@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import { ShowContext } from "../../App";
 import PopUpCourses from "../student/studentComponents/PopUpCourses";
 import InstructorActionCard from "./instructorComponents/InstructorActionCard";
+import ViewMaterials from "./sections/ViewMaterials";
 
 
 function InstructorDashboard() {
@@ -38,8 +39,11 @@ function InstructorDashboard() {
 
 
        <section className="col-start-2 col-span-4 row-start-3 ">
-
             <Progress/>
+       </section>
+
+       <section className="col-start-7 col-span-5 row-start-3">
+            <ViewMaterials/>
        </section>
         <div className="mt-10">
 

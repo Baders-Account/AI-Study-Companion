@@ -79,9 +79,21 @@ async function quizDB() {
   }
 }
 
+async function materialsDB() {
+  try {
+    const materialsDB = client.db("materialsDB");
+    const materials = materialsDB.collection("materials");
+    return materials;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 
 
 export const courses = await coursesDB();  // this is the courses collection
 export const tasks = await tasksDB();
 export const quizz = await quizDB();
+export const users = await userDB();
+export const materials = await materialsDB();

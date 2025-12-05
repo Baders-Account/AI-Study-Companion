@@ -20,9 +20,21 @@ function LoginSignup() {
     const u = loginUsername.trim().toLowerCase();
     const p = loginPassword;
 
-   if (u === "student" && p === "123") return navigate("/Dashboard");
-  if (u === "instructor" && p === "123") return navigate("/instructor");
-  if (u === "admin" && p === "123") return navigate("/admin"); // ✅ add this
+   if (u === "student" && p === "123") {
+      localStorage.setItem("currentUser", u);
+      localStorage.setItem("userRole", "student");
+      return navigate("/Dashboard");
+    }
+    if (u === "instructor" && p === "123") {
+      localStorage.setItem("currentUser", u);
+      localStorage.setItem("userRole", "instructor");
+      return navigate("/instructor");
+    }
+    if (u === "admin" && p === "123") {
+      localStorage.setItem("currentUser", u);
+      localStorage.setItem("userRole", "admin");
+      return navigate("/admin");
+    }
 
   setLoginError("Invalid username or password. Try student/123, instructor/123, or admin/123.");
   };

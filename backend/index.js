@@ -1,6 +1,6 @@
 
 
-import {courses, tasks, quizz} from './src/configs/db.config.js'   // mongoDB  
+import {courses, tasks, quizz, materials} from './src/configs/db.config.js'   // mongoDB  
 import express from 'express'
 import cors from 'cors'
 import crypto from 'crypto'
@@ -187,14 +187,87 @@ router.post('/tasks/toggle', async(req,res)=>{
 
        
 router.delete('/tasks/clearAll', async(req,res)=>{
-            
-        
-            
+
+
+
             await tasks.deleteMany({});
             res.sendStatus(201);
 })
 
 
+// Materials endpoints
+
+// GET all materials (without file content for list view)
+router.get("/materials", async (req, res) => {
+    try {
+        const data = await materials.find({}, {
+            projection: { fileContent: 0 } // exclude file content for performance
+        }).toArray();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET single material with file content (for download)
+router.get("/materials/:id", async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const doc = await materials.findOne({ id });
+        if (!doc) {
+            return res.status(404).json({ error: "Material not found" });
+        }
+        res.json(doc);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// POST new material (file upload as base64)
+router.post("/materials", async (req, res) => {
+    const { title, description, courseName, type, fileContent, fileName, uploadedBy } = req.body;
+
+    // Validate required fields
+    if (!title || !courseName || !fileContent || !fileName) {
+        return res.status(400).json({
+            error: "Missing required fields: title, courseName, fileContent, fileName"
+        });
+    }
+
+    try {
+        const id = Date.now();
+        const newMaterial = {
+            id,
+            title: title.trim(),
+            description: description?.trim() || "",
+            courseName: courseName.trim(),
+            type: type || fileName.split('.').pop().toLowerCase(),
+            fileContent,
+            fileName,
+            uploadedBy: uploadedBy || "unknown",
+            uploadedAt: new Date()
+        };
+
+        await materials.insertOne(newMaterial);
+        res.status(201).json({ id, message: "Material uploaded successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE material
+router.delete("/materials/:id", async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const result = await materials.deleteOne({ id });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ error: "Material not found" });
+        }
+        res.sendStatus(204);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 
         // remove
@@ -203,7 +276,7 @@ router.delete('/tasks/clearAll', async(req,res)=>{
 const deployedFrontendUrl = 'https://ai-study-companion-three.vercel.app';
 const localDevUrl = 'http://localhost:5173'; 
 
-app.use(express.json());  
+app.use(express.json({ limit: '20mb' }));  // increased for base64 file uploads  
 
 app.use(cors({
     origin: [deployedFrontendUrl, localDevUrl], 
