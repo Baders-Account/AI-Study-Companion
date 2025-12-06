@@ -22,14 +22,21 @@ const router = express.Router();
 
 
 
-// router
+// CORS configuration
 const deployedFrontendUrl = 'https://ai-study-companion-three.vercel.app';
 const localDevUrl = 'http://localhost:5173';
 
-app.use(cors({
+const corsOptions = {
         origin: [deployedFrontendUrl, localDevUrl],
-        methods: ['GET', 'POST', 'PUT', 'DELETE']
-}));
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: true
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly for all routes
+app.options('*', cors(corsOptions));
 
 
 // Increase payload limit for file uploads (base64 encoded files can be large)
