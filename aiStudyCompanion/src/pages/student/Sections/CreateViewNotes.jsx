@@ -1,7 +1,9 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { isValidUrl, buildNote, getCollapsedList } from "../studentComponents/utils";
 
-const URL = "https://backend-phi-topaz.vercel.app/api/CreateViewnote"
+import { API_BASE_URL } from "../../../config";
+
+const URL = `${API_BASE_URL}/CreateViewnote`;
 
 function CreateViewNotes({ courseName }) {
   const [notes, setNotes] = useState([]);
