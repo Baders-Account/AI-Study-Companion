@@ -79,6 +79,16 @@ async function quizDB() {
   }
 }
 
+async function CreateViewnotesDB() {
+  try {
+    const CreateViewnotesDB = client.db('CreateViewnotesDB');
+    const CreateViewnote = CreateViewnotesDB.collection('CreateViewnote');
+    return CreateViewnote;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // === NEW COLLECTIONS (Task 1.1) ===
 
 async function enrollmentsDB() {
@@ -136,6 +146,7 @@ export const courses = await coursesDB();  // this is the courses collection
 export const tasks = await tasksDB();
 export const quizz = await quizDB();
 export const users = await usersDB();  // usersDB.users collection
+export const CreateViewnote = await CreateViewnotesDB();
 
 // === NEW COLLECTION EXPORTS (Task 1.1) ===
 export const enrollments = await enrollmentsDB();
