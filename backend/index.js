@@ -1,5 +1,6 @@
 
 
+
 import { courses, tasks, quizz, users, enrollments, materials, questions, notes, CreateViewnote } from './src/configs/db.config.js'   // mongoDB  
 import express from 'express'
 import cors from 'cors'
@@ -34,9 +35,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// Handle preflight requests explicitly for all routes
-app.options('*', cors(corsOptions));
 
 
 // Increase payload limit for file uploads (base64 encoded files can be large)
@@ -897,289 +895,289 @@ router.delete('/enrollments/:id', async (req, res) => {
 
 // GET /api/materials - Get materials with optional filtering by courseId or instructorId
 router.get('/materials', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const { courseId, instructorId, type, isPublished } = req.query;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const { courseId, instructorId, type, isPublished } = req.query;
 
-		// Build filter object based on query params
-		const filter = {};
+                // Build filter object based on query params
+                const filter = {};
 
-		// Filter by courseId if provided
-		if (courseId) {
-			try {
-				filter.courseId = new ObjectId(courseId);
-			} catch (e) {
-				return res.status(400).json({ error: 'Invalid courseId format' });
-			}
-		}
+                // Filter by courseId if provided
+                if (courseId) {
+                        try {
+                                filter.courseId = new ObjectId(courseId);
+                        } catch (e) {
+                                return res.status(400).json({ error: 'Invalid courseId format' });
+                        }
+                }
 
-		// Filter by instructorId if provided
-		if (instructorId) {
-			try {
-				filter.instructorId = new ObjectId(instructorId);
-			} catch (e) {
-				return res.status(400).json({ error: 'Invalid instructorId format' });
-			}
-		}
+                // Filter by instructorId if provided
+                if (instructorId) {
+                        try {
+                                filter.instructorId = new ObjectId(instructorId);
+                        } catch (e) {
+                                return res.status(400).json({ error: 'Invalid instructorId format' });
+                        }
+                }
 
-		// Filter by type if provided
-		if (type) {
-			filter.type = type;
-		}
+                // Filter by type if provided
+                if (type) {
+                        filter.type = type;
+                }
 
-		// Filter by isPublished if provided
-		if (isPublished !== undefined) {
-			filter.isPublished = isPublished === 'true';
-		}
+                // Filter by isPublished if provided
+                if (isPublished !== undefined) {
+                        filter.isPublished = isPublished === 'true';
+                }
 
-		const data = await materials.find(filter).sort({ uploadedAt: -1 }).toArray();
-		res.json(data);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+                const data = await materials.find(filter).sort({ uploadedAt: -1 }).toArray();
+                res.json(data);
+        } catch (error) {
+                res.status(500).json({ error: error.message });
+        }
 });
 
 // GET /api/materials/:id - Get single material by ID
 router.get('/materials/:id', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const id = req.params.id;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const id = req.params.id;
 
-		let material;
-		try {
-			material = await materials.findOne({ _id: new ObjectId(id) });
-		} catch (e) {
-			return res.status(400).json({ error: 'Invalid material ID format' });
-		}
+                let material;
+                try {
+                        material = await materials.findOne({ _id: new ObjectId(id) });
+                } catch (e) {
+                        return res.status(400).json({ error: 'Invalid material ID format' });
+                }
 
-		if (!material) {
-			return res.status(404).json({ error: 'Material not found' });
-		}
+                if (!material) {
+                        return res.status(404).json({ error: 'Material not found' });
+                }
 
-		res.json(material);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+                res.json(material);
+        } catch (error) {
+                res.status(500).json({ error: error.message });
+        }
 });
 
 // POST /api/materials - Upload a new material (instructors only)
 router.post('/materials', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const {
-			courseId,
-			instructorId,
-			title,
-			description,
-			type,
-			fileUrl,
-			fileSize,
-			fileName,
-			mimeType,
-			topic,
-			isPublished,
-			fileContent // Optional: base64 encoded file content for small files
-		} = req.body;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const {
+                        courseId,
+                        instructorId,
+                        title,
+                        description,
+                        type,
+                        fileUrl,
+                        fileSize,
+                        fileName,
+                        mimeType,
+                        topic,
+                        isPublished,
+                        fileContent // Optional: base64 encoded file content for small files
+                } = req.body;
 
-		// Validate required fields
-		if (!courseId || !instructorId || !title || !type) {
-			return res.status(400).json({
-				error: 'Required fields: courseId, instructorId, title, type'
-			});
-		}
+                // Validate required fields
+                if (!courseId || !instructorId || !title || !type) {
+                        return res.status(400).json({
+                                error: 'Required fields: courseId, instructorId, title, type'
+                        });
+                }
 
-		// Validate type
-		const validTypes = ['pdf', 'video', 'link', 'document', 'slides'];
-		if (!validTypes.includes(type)) {
-			return res.status(400).json({
-				error: `Invalid type. Must be one of: ${validTypes.join(', ')}`
-			});
-		}
+                // Validate type
+                const validTypes = ['pdf', 'video', 'link', 'document', 'slides'];
+                if (!validTypes.includes(type)) {
+                        return res.status(400).json({
+                                error: `Invalid type. Must be one of: ${validTypes.join(', ')}`
+                        });
+                }
 
-		// Convert IDs to ObjectId
-		let courseObjId, instructorObjId;
-		try {
-			courseObjId = new ObjectId(courseId);
-			instructorObjId = new ObjectId(instructorId);
-		} catch (e) {
-			return res.status(400).json({ error: 'Invalid courseId or instructorId format' });
-		}
+                // Convert IDs to ObjectId
+                let courseObjId, instructorObjId;
+                try {
+                        courseObjId = new ObjectId(courseId);
+                        instructorObjId = new ObjectId(instructorId);
+                } catch (e) {
+                        return res.status(400).json({ error: 'Invalid courseId or instructorId format' });
+                }
 
-		// Verify course exists
-		let course;
-		try {
-			course = await courses.findOne({ _id: courseObjId });
-		} catch (e) {
-			// Try numeric ID for backwards compatibility
-			course = await courses.findOne({ _id: Number(courseId) });
-			if (course) {
-				courseObjId = course._id;
-			}
-		}
-		if (!course) {
-			return res.status(404).json({ error: 'Course not found' });
-		}
+                // Verify course exists
+                let course;
+                try {
+                        course = await courses.findOne({ _id: courseObjId });
+                } catch (e) {
+                        // Try numeric ID for backwards compatibility
+                        course = await courses.findOne({ _id: Number(courseId) });
+                        if (course) {
+                                courseObjId = course._id;
+                        }
+                }
+                if (!course) {
+                        return res.status(404).json({ error: 'Course not found' });
+                }
 
-		// Verify instructor exists and has instructor role
-		const instructor = await users.findOne({ _id: instructorObjId });
-		if (!instructor) {
-			return res.status(404).json({ error: 'Instructor not found' });
-		}
-		if (instructor.role !== 'instructor' && instructor.role !== 'admin') {
-			return res.status(403).json({ error: 'User is not an instructor' });
-		}
+                // Verify instructor exists and has instructor role
+                const instructor = await users.findOne({ _id: instructorObjId });
+                if (!instructor) {
+                        return res.status(404).json({ error: 'Instructor not found' });
+                }
+                if (instructor.role !== 'instructor' && instructor.role !== 'admin') {
+                        return res.status(403).json({ error: 'User is not an instructor' });
+                }
 
-		// Create material document
-		const now = new Date();
-		const newMaterial = {
-			courseId: courseObjId,
-			instructorId: instructorObjId,
-			title,
-			description: description || '',
-			type,
-			fileUrl: fileUrl || '',
-			fileSize: fileSize || 0,
-			fileName: fileName || '',
-			mimeType: mimeType || '',
-			topic: topic || '',
-			isPublished: isPublished !== undefined ? isPublished : true,
-			uploadedAt: now,
-			updatedAt: now
-		};
+                // Create material document
+                const now = new Date();
+                const newMaterial = {
+                        courseId: courseObjId,
+                        instructorId: instructorObjId,
+                        title,
+                        description: description || '',
+                        type,
+                        fileUrl: fileUrl || '',
+                        fileSize: fileSize || 0,
+                        fileName: fileName || '',
+                        mimeType: mimeType || '',
+                        topic: topic || '',
+                        isPublished: isPublished !== undefined ? isPublished : true,
+                        uploadedAt: now,
+                        updatedAt: now
+                };
 
-		// Store base64 content if provided (for small files)
-		if (fileContent) {
-			// Check file size limit (16MB max for MongoDB documents)
-			const contentSize = Buffer.byteLength(fileContent, 'base64');
-			if (contentSize > 16 * 1024 * 1024) {
-				return res.status(400).json({
-					error: 'File too large. Maximum size is 16MB for direct upload. Use fileUrl for larger files.'
-				});
-			}
-			newMaterial.fileContent = fileContent;
-			newMaterial.fileSize = contentSize;
-		}
+                // Store base64 content if provided (for small files)
+                if (fileContent) {
+                        // Check file size limit (16MB max for MongoDB documents)
+                        const contentSize = Buffer.byteLength(fileContent, 'base64');
+                        if (contentSize > 16 * 1024 * 1024) {
+                                return res.status(400).json({
+                                        error: 'File too large. Maximum size is 16MB for direct upload. Use fileUrl for larger files.'
+                                });
+                        }
+                        newMaterial.fileContent = fileContent;
+                        newMaterial.fileSize = contentSize;
+                }
 
-		const result = await materials.insertOne(newMaterial);
+                const result = await materials.insertOne(newMaterial);
 
-		res.status(201).json({
-			success: true,
-			materialId: result.insertedId,
-			message: 'Material uploaded successfully'
-		});
-	} catch (error) {
-		console.error('Material upload error:', error);
-		res.status(500).json({ error: error.message });
-	}
+                res.status(201).json({
+                        success: true,
+                        materialId: result.insertedId,
+                        message: 'Material uploaded successfully'
+                });
+        } catch (error) {
+                console.error('Material upload error:', error);
+                res.status(500).json({ error: error.message });
+        }
 });
 
 // PUT /api/materials/:id - Update a material
 router.put('/materials/:id', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const id = req.params.id;
-		const {
-			title,
-			description,
-			type,
-			fileUrl,
-			fileSize,
-			fileName,
-			mimeType,
-			topic,
-			isPublished,
-			fileContent
-		} = req.body;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const id = req.params.id;
+                const {
+                        title,
+                        description,
+                        type,
+                        fileUrl,
+                        fileSize,
+                        fileName,
+                        mimeType,
+                        topic,
+                        isPublished,
+                        fileContent
+                } = req.body;
 
-		// Find the material
-		let material;
-		let query;
-		try {
-			query = { _id: new ObjectId(id) };
-			material = await materials.findOne(query);
-		} catch (e) {
-			return res.status(400).json({ error: 'Invalid material ID format' });
-		}
+                // Find the material
+                let material;
+                let query;
+                try {
+                        query = { _id: new ObjectId(id) };
+                        material = await materials.findOne(query);
+                } catch (e) {
+                        return res.status(400).json({ error: 'Invalid material ID format' });
+                }
 
-		if (!material) {
-			return res.status(404).json({ error: 'Material not found' });
-		}
+                if (!material) {
+                        return res.status(404).json({ error: 'Material not found' });
+                }
 
-		// Validate type if provided
-		if (type) {
-			const validTypes = ['pdf', 'video', 'link', 'document', 'slides'];
-			if (!validTypes.includes(type)) {
-				return res.status(400).json({
-					error: `Invalid type. Must be one of: ${validTypes.join(', ')}`
-				});
-			}
-		}
+                // Validate type if provided
+                if (type) {
+                        const validTypes = ['pdf', 'video', 'link', 'document', 'slides'];
+                        if (!validTypes.includes(type)) {
+                                return res.status(400).json({
+                                        error: `Invalid type. Must be one of: ${validTypes.join(', ')}`
+                                });
+                        }
+                }
 
-		// Build update object with only provided fields
-		const updateFields = { updatedAt: new Date() };
-		if (title !== undefined) updateFields.title = title;
-		if (description !== undefined) updateFields.description = description;
-		if (type !== undefined) updateFields.type = type;
-		if (fileUrl !== undefined) updateFields.fileUrl = fileUrl;
-		if (fileSize !== undefined) updateFields.fileSize = fileSize;
-		if (fileName !== undefined) updateFields.fileName = fileName;
-		if (mimeType !== undefined) updateFields.mimeType = mimeType;
-		if (topic !== undefined) updateFields.topic = topic;
-		if (isPublished !== undefined) updateFields.isPublished = isPublished;
+                // Build update object with only provided fields
+                const updateFields = { updatedAt: new Date() };
+                if (title !== undefined) updateFields.title = title;
+                if (description !== undefined) updateFields.description = description;
+                if (type !== undefined) updateFields.type = type;
+                if (fileUrl !== undefined) updateFields.fileUrl = fileUrl;
+                if (fileSize !== undefined) updateFields.fileSize = fileSize;
+                if (fileName !== undefined) updateFields.fileName = fileName;
+                if (mimeType !== undefined) updateFields.mimeType = mimeType;
+                if (topic !== undefined) updateFields.topic = topic;
+                if (isPublished !== undefined) updateFields.isPublished = isPublished;
 
-		// Handle file content update
-		if (fileContent !== undefined) {
-			if (fileContent) {
-				const contentSize = Buffer.byteLength(fileContent, 'base64');
-				if (contentSize > 16 * 1024 * 1024) {
-					return res.status(400).json({
-						error: 'File too large. Maximum size is 16MB for direct upload.'
-					});
-				}
-				updateFields.fileContent = fileContent;
-				updateFields.fileSize = contentSize;
-			} else {
-				// Remove file content if explicitly set to null/empty
-				updateFields.fileContent = null;
-			}
-		}
+                // Handle file content update
+                if (fileContent !== undefined) {
+                        if (fileContent) {
+                                const contentSize = Buffer.byteLength(fileContent, 'base64');
+                                if (contentSize > 16 * 1024 * 1024) {
+                                        return res.status(400).json({
+                                                error: 'File too large. Maximum size is 16MB for direct upload.'
+                                        });
+                                }
+                                updateFields.fileContent = fileContent;
+                                updateFields.fileSize = contentSize;
+                        } else {
+                                // Remove file content if explicitly set to null/empty
+                                updateFields.fileContent = null;
+                        }
+                }
 
-		if (Object.keys(updateFields).length === 1) { // Only updatedAt
-			return res.status(400).json({ error: 'No valid fields to update' });
-		}
+                if (Object.keys(updateFields).length === 1) { // Only updatedAt
+                        return res.status(400).json({ error: 'No valid fields to update' });
+                }
 
-		await materials.updateOne(query, { $set: updateFields });
+                await materials.updateOne(query, { $set: updateFields });
 
-		res.json({
-			success: true,
-			message: 'Material updated successfully'
-		});
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+                res.json({
+                        success: true,
+                        message: 'Material updated successfully'
+                });
+        } catch (error) {
+                res.status(500).json({ error: error.message });
+        }
 });
 
 // DELETE /api/materials/:id - Delete a material
 router.delete('/materials/:id', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const id = req.params.id;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const id = req.params.id;
 
-		let result;
-		try {
-			result = await materials.deleteOne({ _id: new ObjectId(id) });
-		} catch (e) {
-			return res.status(400).json({ error: 'Invalid material ID format' });
-		}
+                let result;
+                try {
+                        result = await materials.deleteOne({ _id: new ObjectId(id) });
+                } catch (e) {
+                        return res.status(400).json({ error: 'Invalid material ID format' });
+                }
 
-		if (result.deletedCount === 0) {
-			return res.status(404).json({ error: 'Material not found' });
-		}
+                if (result.deletedCount === 0) {
+                        return res.status(404).json({ error: 'Material not found' });
+                }
 
-		res.status(204).send();
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+                res.status(204).send();
+        } catch (error) {
+                res.status(500).json({ error: error.message });
+        }
 });
 
 
@@ -1187,307 +1185,307 @@ router.delete('/materials/:id', async (req, res) => {
 
 // GET /api/notes - Get notes with optional filtering by studentId or courseId
 router.get('/notes', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const { studentId, courseId, isPinned, isShared } = req.query;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const { studentId, courseId, isPinned, isShared } = req.query;
 
-		// Build filter object based on query params
-		const filter = {};
+                // Build filter object based on query params
+                const filter = {};
 
-		// Filter by studentId if provided
-		if (studentId) {
-			try {
-				filter.studentId = new ObjectId(studentId);
-			} catch (e) {
-				return res.status(400).json({ error: 'Invalid studentId format' });
-			}
-		}
+                // Filter by studentId if provided
+                if (studentId) {
+                        try {
+                                filter.studentId = new ObjectId(studentId);
+                        } catch (e) {
+                                return res.status(400).json({ error: 'Invalid studentId format' });
+                        }
+                }
 
-		// Filter by courseId if provided
-		if (courseId) {
-			try {
-				filter.courseId = new ObjectId(courseId);
-			} catch (e) {
-				return res.status(400).json({ error: 'Invalid courseId format' });
-			}
-		}
+                // Filter by courseId if provided
+                if (courseId) {
+                        try {
+                                filter.courseId = new ObjectId(courseId);
+                        } catch (e) {
+                                return res.status(400).json({ error: 'Invalid courseId format' });
+                        }
+                }
 
-		// Filter by isPinned if provided
-		if (isPinned !== undefined) {
-			filter.isPinned = isPinned === 'true';
-		}
+                // Filter by isPinned if provided
+                if (isPinned !== undefined) {
+                        filter.isPinned = isPinned === 'true';
+                }
 
-		// Filter by isShared if provided
-		if (isShared !== undefined) {
-			filter.isShared = isShared === 'true';
-		}
+                // Filter by isShared if provided
+                if (isShared !== undefined) {
+                        filter.isShared = isShared === 'true';
+                }
 
-		// Sort by isPinned (pinned first), then by updatedAt (newest first)
-		const data = await notes.find(filter).sort({ isPinned: -1, updatedAt: -1 }).toArray();
-		res.json(data);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+                // Sort by isPinned (pinned first), then by updatedAt (newest first)
+                const data = await notes.find(filter).sort({ isPinned: -1, updatedAt: -1 }).toArray();
+                res.json(data);
+        } catch (error) {
+                res.status(500).json({ error: error.message });
+        }
 });
 
 // GET /api/notes/:id - Get single note by ID
 router.get('/notes/:id', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const id = req.params.id;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const id = req.params.id;
 
-		let note;
-		try {
-			note = await notes.findOne({ _id: new ObjectId(id) });
-		} catch (e) {
-			return res.status(400).json({ error: 'Invalid note ID format' });
-		}
+                let note;
+                try {
+                        note = await notes.findOne({ _id: new ObjectId(id) });
+                } catch (e) {
+                        return res.status(400).json({ error: 'Invalid note ID format' });
+                }
 
-		if (!note) {
-			return res.status(404).json({ error: 'Note not found' });
-		}
+                if (!note) {
+                        return res.status(404).json({ error: 'Note not found' });
+                }
 
-		// Update lastViewedAt
-		await notes.updateOne(
-			{ _id: new ObjectId(id) },
-			{ $set: { lastViewedAt: new Date() } }
-		);
+                // Update lastViewedAt
+                await notes.updateOne(
+                        { _id: new ObjectId(id) },
+                        { $set: { lastViewedAt: new Date() } }
+                );
 
-		res.json(note);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+                res.json(note);
+        } catch (error) {
+                res.status(500).json({ error: error.message });
+        }
 });
 
 // POST /api/notes - Create a new note
 router.post('/notes', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const {
-			studentId,
-			courseId,
-			title,
-			content,
-			tags,
-			color,
-			isPinned,
-			isShared,
-			relatedMaterialId
-		} = req.body;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const {
+                        studentId,
+                        courseId,
+                        title,
+                        content,
+                        tags,
+                        color,
+                        isPinned,
+                        isShared,
+                        relatedMaterialId
+                } = req.body;
 
-		// Validate required fields
-		if (!studentId || !title) {
-			return res.status(400).json({
-				error: 'Required fields: studentId, title'
-			});
-		}
+                // Validate required fields
+                if (!studentId || !title) {
+                        return res.status(400).json({
+                                error: 'Required fields: studentId, title'
+                        });
+                }
 
-		// Convert studentId to ObjectId
-		let studentObjId;
-		try {
-			studentObjId = new ObjectId(studentId);
-		} catch (e) {
-			return res.status(400).json({ error: 'Invalid studentId format' });
-		}
+                // Convert studentId to ObjectId
+                let studentObjId;
+                try {
+                        studentObjId = new ObjectId(studentId);
+                } catch (e) {
+                        return res.status(400).json({ error: 'Invalid studentId format' });
+                }
 
-		// Verify student exists
-		const student = await users.findOne({ _id: studentObjId });
-		if (!student) {
-			return res.status(404).json({ error: 'Student not found' });
-		}
+                // Verify student exists
+                const student = await users.findOne({ _id: studentObjId });
+                if (!student) {
+                        return res.status(404).json({ error: 'Student not found' });
+                }
 
-		// Convert courseId to ObjectId if provided
-		let courseObjId = null;
-		if (courseId) {
-			try {
-				courseObjId = new ObjectId(courseId);
-				// Verify course exists
-				let course = await courses.findOne({ _id: courseObjId });
-				if (!course) {
-					// Try numeric ID for backwards compatibility
-					course = await courses.findOne({ _id: Number(courseId) });
-					if (course) {
-						courseObjId = course._id;
-					} else {
-						return res.status(404).json({ error: 'Course not found' });
-					}
-				}
-			} catch (e) {
-				return res.status(400).json({ error: 'Invalid courseId format' });
-			}
-		}
+                // Convert courseId to ObjectId if provided
+                let courseObjId = null;
+                if (courseId) {
+                        try {
+                                courseObjId = new ObjectId(courseId);
+                                // Verify course exists
+                                let course = await courses.findOne({ _id: courseObjId });
+                                if (!course) {
+                                        // Try numeric ID for backwards compatibility
+                                        course = await courses.findOne({ _id: Number(courseId) });
+                                        if (course) {
+                                                courseObjId = course._id;
+                                        } else {
+                                                return res.status(404).json({ error: 'Course not found' });
+                                        }
+                                }
+                        } catch (e) {
+                                return res.status(400).json({ error: 'Invalid courseId format' });
+                        }
+                }
 
-		// Convert relatedMaterialId to ObjectId if provided
-		let materialObjId = null;
-		if (relatedMaterialId) {
-			try {
-				materialObjId = new ObjectId(relatedMaterialId);
-				// Verify material exists
-				const material = await materials.findOne({ _id: materialObjId });
-				if (!material) {
-					return res.status(404).json({ error: 'Related material not found' });
-				}
-			} catch (e) {
-				return res.status(400).json({ error: 'Invalid relatedMaterialId format' });
-			}
-		}
+                // Convert relatedMaterialId to ObjectId if provided
+                let materialObjId = null;
+                if (relatedMaterialId) {
+                        try {
+                                materialObjId = new ObjectId(relatedMaterialId);
+                                // Verify material exists
+                                const material = await materials.findOne({ _id: materialObjId });
+                                if (!material) {
+                                        return res.status(404).json({ error: 'Related material not found' });
+                                }
+                        } catch (e) {
+                                return res.status(400).json({ error: 'Invalid relatedMaterialId format' });
+                        }
+                }
 
-		// Create note document
-		const now = new Date();
-		const newNote = {
-			studentId: studentObjId,
-			courseId: courseObjId,
-			title,
-			content: content || '',
-			tags: tags || [],
-			color: color || '#FFFFFF',
-			isPinned: isPinned || false,
-			isShared: isShared || false,
-			createdAt: now,
-			updatedAt: now,
-			lastViewedAt: now,
-			relatedMaterialId: materialObjId
-		};
+                // Create note document
+                const now = new Date();
+                const newNote = {
+                        studentId: studentObjId,
+                        courseId: courseObjId,
+                        title,
+                        content: content || '',
+                        tags: tags || [],
+                        color: color || '#FFFFFF',
+                        isPinned: isPinned || false,
+                        isShared: isShared || false,
+                        createdAt: now,
+                        updatedAt: now,
+                        lastViewedAt: now,
+                        relatedMaterialId: materialObjId
+                };
 
-		const result = await notes.insertOne(newNote);
+                const result = await notes.insertOne(newNote);
 
-		res.status(201).json({
-			success: true,
-			noteId: result.insertedId,
-			message: 'Note created successfully'
-		});
-	} catch (error) {
-		console.error('Note creation error:', error);
-		res.status(500).json({ error: error.message });
-	}
+                res.status(201).json({
+                        success: true,
+                        noteId: result.insertedId,
+                        message: 'Note created successfully'
+                });
+        } catch (error) {
+                console.error('Note creation error:', error);
+                res.status(500).json({ error: error.message });
+        }
 });
 
 // PUT /api/notes/:id - Update a note
 router.put('/notes/:id', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const id = req.params.id;
-		const {
-			title,
-			content,
-			courseId,
-			tags,
-			color,
-			isPinned,
-			isShared,
-			relatedMaterialId
-		} = req.body;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const id = req.params.id;
+                const {
+                        title,
+                        content,
+                        courseId,
+                        tags,
+                        color,
+                        isPinned,
+                        isShared,
+                        relatedMaterialId
+                } = req.body;
 
-		// Find the note
-		let note;
-		let query;
-		try {
-			query = { _id: new ObjectId(id) };
-			note = await notes.findOne(query);
-		} catch (e) {
-			return res.status(400).json({ error: 'Invalid note ID format' });
-		}
+                // Find the note
+                let note;
+                let query;
+                try {
+                        query = { _id: new ObjectId(id) };
+                        note = await notes.findOne(query);
+                } catch (e) {
+                        return res.status(400).json({ error: 'Invalid note ID format' });
+                }
 
-		if (!note) {
-			return res.status(404).json({ error: 'Note not found' });
-		}
+                if (!note) {
+                        return res.status(404).json({ error: 'Note not found' });
+                }
 
-		// Build update object with only provided fields
-		const updateFields = { updatedAt: new Date() };
+                // Build update object with only provided fields
+                const updateFields = { updatedAt: new Date() };
 
-		if (title !== undefined) updateFields.title = title;
-		if (content !== undefined) updateFields.content = content;
-		if (tags !== undefined) updateFields.tags = tags;
-		if (color !== undefined) updateFields.color = color;
-		if (isPinned !== undefined) updateFields.isPinned = isPinned;
-		if (isShared !== undefined) updateFields.isShared = isShared;
+                if (title !== undefined) updateFields.title = title;
+                if (content !== undefined) updateFields.content = content;
+                if (tags !== undefined) updateFields.tags = tags;
+                if (color !== undefined) updateFields.color = color;
+                if (isPinned !== undefined) updateFields.isPinned = isPinned;
+                if (isShared !== undefined) updateFields.isShared = isShared;
 
-		// Handle courseId update
-		if (courseId !== undefined) {
-			if (courseId === null) {
-				updateFields.courseId = null;
-			} else {
-				try {
-					const courseObjId = new ObjectId(courseId);
-					let course = await courses.findOne({ _id: courseObjId });
-					if (!course) {
-						course = await courses.findOne({ _id: Number(courseId) });
-						if (course) {
-							updateFields.courseId = course._id;
-						} else {
-							return res.status(404).json({ error: 'Course not found' });
-						}
-					} else {
-						updateFields.courseId = courseObjId;
-					}
-				} catch (e) {
-					return res.status(400).json({ error: 'Invalid courseId format' });
-				}
-			}
-		}
+                // Handle courseId update
+                if (courseId !== undefined) {
+                        if (courseId === null) {
+                                updateFields.courseId = null;
+                        } else {
+                                try {
+                                        const courseObjId = new ObjectId(courseId);
+                                        let course = await courses.findOne({ _id: courseObjId });
+                                        if (!course) {
+                                                course = await courses.findOne({ _id: Number(courseId) });
+                                                if (course) {
+                                                        updateFields.courseId = course._id;
+                                                } else {
+                                                        return res.status(404).json({ error: 'Course not found' });
+                                                }
+                                        } else {
+                                                updateFields.courseId = courseObjId;
+                                        }
+                                } catch (e) {
+                                        return res.status(400).json({ error: 'Invalid courseId format' });
+                                }
+                        }
+                }
 
-		// Handle relatedMaterialId update
-		if (relatedMaterialId !== undefined) {
-			if (relatedMaterialId === null) {
-				updateFields.relatedMaterialId = null;
-			} else {
-				try {
-					const materialObjId = new ObjectId(relatedMaterialId);
-					const material = await materials.findOne({ _id: materialObjId });
-					if (!material) {
-						return res.status(404).json({ error: 'Related material not found' });
-					}
-					updateFields.relatedMaterialId = materialObjId;
-				} catch (e) {
-					return res.status(400).json({ error: 'Invalid relatedMaterialId format' });
-				}
-			}
-		}
+                // Handle relatedMaterialId update
+                if (relatedMaterialId !== undefined) {
+                        if (relatedMaterialId === null) {
+                                updateFields.relatedMaterialId = null;
+                        } else {
+                                try {
+                                        const materialObjId = new ObjectId(relatedMaterialId);
+                                        const material = await materials.findOne({ _id: materialObjId });
+                                        if (!material) {
+                                                return res.status(404).json({ error: 'Related material not found' });
+                                        }
+                                        updateFields.relatedMaterialId = materialObjId;
+                                } catch (e) {
+                                        return res.status(400).json({ error: 'Invalid relatedMaterialId format' });
+                                }
+                        }
+                }
 
-		if (Object.keys(updateFields).length === 1) { // Only updatedAt
-			return res.status(400).json({ error: 'No valid fields to update' });
-		}
+                if (Object.keys(updateFields).length === 1) { // Only updatedAt
+                        return res.status(400).json({ error: 'No valid fields to update' });
+                }
 
-		await notes.updateOne(query, { $set: updateFields });
+                await notes.updateOne(query, { $set: updateFields });
 
-		res.json({
-			success: true,
-			message: 'Note updated successfully'
-		});
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+                res.json({
+                        success: true,
+                        message: 'Note updated successfully'
+                });
+        } catch (error) {
+                res.status(500).json({ error: error.message });
+        }
 });
 
 // DELETE /api/notes/:id - Delete a note
 router.delete('/notes/:id', async (req, res) => {
-	try {
-		const { ObjectId } = await import('mongodb');
-		const id = req.params.id;
+        try {
+                const { ObjectId } = await import('mongodb');
+                const id = req.params.id;
 
-		let result;
-		try {
-			result = await notes.deleteOne({ _id: new ObjectId(id) });
-		} catch (e) {
-			return res.status(400).json({ error: 'Invalid note ID format' });
-		}
+                let result;
+                try {
+                        result = await notes.deleteOne({ _id: new ObjectId(id) });
+                } catch (e) {
+                        return res.status(400).json({ error: 'Invalid note ID format' });
+                }
 
-		if (result.deletedCount === 0) {
-			return res.status(404).json({ error: 'Note not found' });
-		}
+                if (result.deletedCount === 0) {
+                        return res.status(404).json({ error: 'Note not found' });
+                }
 
-		res.status(204).send();
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+                res.status(204).send();
+        } catch (error) {
+                res.status(500).json({ error: error.message });
+        }
 });
 
 //CREATE AND VIEW NOTES
-router.get("/CreateViewnote", async (req,res)=>{
+router.get("/CreateViewnote", async (req, res) => {
         try {
-                const {courseName} = req.query;
+                const { courseName } = req.query;
                 const filter = {};
-                if (courseName){
+                if (courseName) {
                         filter.courseName = courseName;
                 }
                 const data = await CreateViewnote.find(filter).toArray();
@@ -1498,7 +1496,7 @@ router.get("/CreateViewnote", async (req,res)=>{
         }
 });
 
-router.post("/CreateViewnote", async (req, res)=>{
+router.post("/CreateViewnote", async (req, res) => {
         try {
                 const newNote = req.body;
                 newNote.courseName = String(newNote.courseName);
@@ -1514,20 +1512,20 @@ router.post("/CreateViewnote", async (req, res)=>{
 });
 
 router.delete('/CreateViewnote/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
+        try {
+                const { id } = req.params;
 
-    const result = await CreateViewnote.deleteOne({ id });
+                const result = await CreateViewnote.deleteOne({ id });
 
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: 'Note not found' });
-    }
+                if (result.deletedCount === 0) {
+                        return res.status(404).json({ message: 'Note not found' });
+                }
 
-    res.sendStatus(204);
-  } catch (err) {
-    console.error('DELETE /notes/:id error:', err);
-    res.status(500).json({ message: 'Failed to delete note' });
-  }
+                res.sendStatus(204);
+        } catch (err) {
+                console.error('DELETE /notes/:id error:', err);
+                res.status(500).json({ message: 'Failed to delete note' });
+        }
 });
 
 
