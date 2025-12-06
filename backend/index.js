@@ -1490,7 +1490,7 @@ router.get("/CreateViewnote", async (req,res)=>{
                 if (courseName){
                         filter.courseName = courseName;
                 }
-                const data = await notes.find(filter).toArray();
+                const data = await CreateViewnote.find(filter).toArray();
                 res.json(data);
         } catch (error) {
                 console.error('GET /notes error:', error);
@@ -1502,7 +1502,7 @@ router.post("/CreateViewnote", async (req, res)=>{
         try {
                 const newNote = req.body;
                 newNote.courseName = String(newNote.courseName);
-                const result = await notes.insertOne(newNote);
+                const result = await CreateViewnote.insertOne(newNote);
                 res.status(201).json({
                         message: "Note created",
                         insertedId: result.insertedId,
@@ -1517,7 +1517,7 @@ router.delete('/CreateViewnote/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await notes.deleteOne({ id });
+    const result = await CreateViewnote.deleteOne({ id });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: 'Note not found' });
