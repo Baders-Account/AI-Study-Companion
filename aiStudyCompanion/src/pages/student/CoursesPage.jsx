@@ -20,7 +20,7 @@ export default function CoursesPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <CreateViewNotes />
+        <CreateViewNotes courseName={decodedCourseName}/>
         <AiAssistant />
         <ViewQuiz />
         <ViewMaterials />
