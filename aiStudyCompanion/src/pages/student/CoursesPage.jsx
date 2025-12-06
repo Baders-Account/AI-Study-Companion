@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import CreateViewNotes from "./Sections/CreateViewNotes"
 import AiAssistant from "./Sections/AiAssistant"
 import ViewQuiz from "./Sections/ViewQuiz"
+import ViewMaterials from "./Sections/ViewMaterials"
 import { useParams } from "react-router-dom";
 
 export default function CoursesPage() {
@@ -22,6 +23,7 @@ export default function CoursesPage() {
         <CreateViewNotes />
         <AiAssistant />
         <ViewQuiz />
+        <ViewMaterials />
       </div>
     </section>
   );

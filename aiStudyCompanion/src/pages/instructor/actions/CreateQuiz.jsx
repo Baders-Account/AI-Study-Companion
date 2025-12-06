@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../../config";
 
-const URL = "https://backend-phi-topaz.vercel.app/api/quizz/ai-create";
+const URL = `${API_BASE_URL}/quizz/ai-create`;
 
 
 function CreateQuiz() {
@@ -19,35 +20,35 @@ function CreateQuiz() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     // Validate form data before sending
-    if(!form.quizName.trim() || !form.course.trim() || !form.notesText.trim()){
+    if (!form.quizName.trim() || !form.course.trim() || !form.notesText.trim()) {
       setError("All fields are required and cannot be empty.");
       setLoading(false);
       return;
     }
-    
+
     try {
-      const response = await fetch(URL,{
+      const response = await fetch(URL, {
         method: "POST",
-        headers:{"Content-Type": "application/json"},
-        body: JSON.stringify({ 
-          quizName: form.quizName.trim(), 
-          course: form.course.trim(), 
-          notesText: form.notesText.trim() 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          quizName: form.quizName.trim(),
+          course: form.course.trim(),
+          notesText: form.notesText.trim()
         }),
       });
-      
+
       // Check content type before parsing
       const contentType = response.headers.get("content-type");
       let data;
-      
-      if(contentType && contentType.includes("application/json")){
+
+      if (contentType && contentType.includes("application/json")) {
         // Response is JSON, parse it
         data = await response.json();
       } else {
@@ -55,25 +56,25 @@ function CreateQuiz() {
         const text = await response.text();
         throw new Error(`Server returned ${response.status} error. The API endpoint may not be available.`);
       }
-      
-      if(!response.ok){
+
+      if (!response.ok) {
         // Get error message from response body
         const errorMessage = data.error || `HTTP error! status: ${response.status}`;
         throw new Error(errorMessage);
       }
-      
+
       // Success - navigate to instructor dashboard
       navigate("/instructor");
     } catch (error) {
       // Handle network errors, JSON parsing errors, or API errors
-      if(error.name === 'TypeError' && error.message.includes('fetch')){
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
         setError("Network error. Please check your internet connection and ensure the backend server is running.");
-      } else if(error.message.includes('Unexpected token') || error.message.includes('JSON')){
+      } else if (error.message.includes('Unexpected token') || error.message.includes('JSON')) {
         setError("Server error: The backend returned an invalid response. Please check if the API endpoint is correct and the server is running.");
       } else {
         setError(error.message || "An unexpected error occurred. Please try again.");
       }
-    }finally{
+    } finally {
       setLoading(false);
     }
   }
@@ -127,7 +128,7 @@ function CreateQuiz() {
         <div className="flex gap-3">
           <button
             type="submit"
-            disabled = {loading}
+            disabled={loading}
             className="px-5 py-2.5 rounded-lg bg-gray-700 text-white hover:bg-red-800 transition"
           >
             {loading ? "Saving..." : "Create"}
@@ -136,7 +137,7 @@ function CreateQuiz() {
             type="button"
             onClick={() => navigate(-1)}
             className="px-5 py-2.5 rounded-lg border"
-            disabled = {loading}
+            disabled={loading}
           >
             Cancel
           </button>
@@ -144,4 +145,4 @@ function CreateQuiz() {
       </form>
     </main>
   );
-}export default CreateQuiz
+} export default CreateQuiz

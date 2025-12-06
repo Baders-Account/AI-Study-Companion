@@ -1,121 +1,122 @@
-import { useState,useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "../../../components/Button";
+import { API_BASE_URL } from "../../../config";
 
-function ToDoList(){
+function ToDoList() {
     const [tasks, setTasks] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const url = "https://backend-phi-topaz.vercel.app/api/tasks"
+    const url = `${API_BASE_URL}/tasks`
 
     // fetch tasks only on mount
-    useEffect(()=>{
-        const fetchTasks= async () =>{
+    useEffect(() => {
+        const fetchTasks = async () => {
             setLoading(true);
             setError(null);
-            try{
+            try {
                 const response = await fetch(url);
-                if(!response.ok){
+                if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const result = await response.json();
                 setTasks(result);
             }
-            catch(err){
+            catch (err) {
                 console.log(err);
                 setError(err.message);
             }
-            finally{
+            finally {
                 setLoading(false);
             }
         }
         fetchTasks();
-    },[]) // empty dependency array => only runs once
+    }, []) // empty dependency array => only runs once
 
-    const addTask= async ()=> {
-        const userInput = inputValue    
+    const addTask = async () => {
+        const userInput = inputValue
         setInputValue('');
         setLoading(true);
         setError(null);
-        try{
+        try {
             const response = await fetch(`${url}/add-todo`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     _id: new Date(),
-                    text:userInput,
+                    text: userInput,
                     completed: false
                 })
             });
-            if (!response.ok){
+            if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
-            const newTask = {_id: new Date().toString(), text: userInput, completed: false};
+
+            const newTask = { _id: new Date().toString(), text: userInput, completed: false };
             setTasks(prev => [...prev, newTask]);
         }
-        catch(err){
+        catch (err) {
             console.log(err);
             setError(err.message);
         }
-        finally{
+        finally {
             setLoading(false);
         }
     };
 
-    const toggleComplete= async(e) =>{
-        const specificTask= tasks.find(course=> course._id == e.target.value)
+    const toggleComplete = async (e) => {
+        const specificTask = tasks.find(course => course._id == e.target.value)
         const isClicked = !specificTask.completed;
         setLoading(true);
         setError(null);
-        try{
+        try {
             const response = await fetch(`${url}/toggle`, {
-                method:'POST',
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     id: e.target.value,
                     completed: isClicked
                 })
             })
-            if (!response.ok){
-                 throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
             // update tasks locally
-            setTasks(prev => prev.map(task => task._id === e.target.value ? {...task, completed: isClicked} : task));
+            setTasks(prev => prev.map(task => task._id === e.target.value ? { ...task, completed: isClicked } : task));
         }
-        catch(err){
+        catch (err) {
             console.log(err);
             setError(err.message);
         }
-        finally{
+        finally {
             setLoading(false);
         }
     };
 
-    const clearAll= async()=>{
+    const clearAll = async () => {
         setLoading(true);
         setError(null);
-        try{
-            const response = await fetch(`${url}/clearAll`,{
-                method:'DELETE'
+        try {
+            const response = await fetch(`${url}/clearAll`, {
+                method: 'DELETE'
             })
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             setTasks([]); // clear tasks locally
         }
-        catch(err){
+        catch (err) {
             console.log(err);
             setError(err.message);
         }
-        finally{
+        finally {
             setLoading(false);
         }
     };
 
-    return(
+    return (
         <section className="relative grid grid-cols-12 grid-rows-2 gap-1 p-6 mt-16 items-stretch border rounded-lg shadow-lg w-full  bg-white dark:bg-gray-800 justify-center">
-            
+
             <div className="flex flex-col  gap-1 col-start-11  col-span-4 justify-self-end self-start">
 
                 <button onClick={addTask} type="button" disabled={!inputValue || loading} className={`focus:outline-none text-white font-medium rounded-lg text-sm px-5 py-2.5    ${!inputValue ? "bg-gray-400 cursor-not-allowed" : "bg-gray-700 hover:bg-red-800 cursor-pointer"} focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900`}>
@@ -126,12 +127,12 @@ function ToDoList(){
                     {loading ? 'Loading...' : 'Clear All'}
                 </button>
             </div>
-            
+
             <div className="flex flex-col gap-2 col-start-1 self-start  row-start-1 row-span-2 col-span-8 ">
                 <h1 className=" font-bold text-gray-900 dark:text-white mb-4 md:mb-0 lg:text-3xl lg:row-start-1 lg:col-start-1 lg:justify-self-start lg:self-start">
                     To Do List
                 </h1>
-                
+
                 {!inputValue && (
                     <p className="text-red-600 text-sm ">This field is required.</p>
                 )}
@@ -141,7 +142,7 @@ function ToDoList(){
                 )}
 
                 <input name="input" type="text" value={inputValue} placeholder=" Type here" className="bg-gray-200 ml-3 p-2 rounded" onChange={(e) => setInputValue(e.target.value)}></input>
-                
+
                 <ul className="relative flex flex-col items-stretch gap-2 ml-3 p-2 ">
                     {loading && <li className="text-gray-500">Loading tasks...</li>}
 
