@@ -1,6 +1,6 @@
 
 
-import { courses, tasks, quizz, users, enrollments, materials, questions, notes, CreateViewnote } from './src/configs/db.config.js'   // mongoDB  
+import { courses, tasks, quizz, users, enrollments, materials, questions, notes } from './src/configs/db.config.js'   // mongoDB  
 import express from 'express'
 import cors from 'cors'
 import crypto from 'crypto'
