@@ -7,4 +7,4 @@ const isDev = import.meta.env.DEV; // Vite automatically sets this
 
 export const API_BASE_URL = isDev
     ? "http://localhost:3000/api"
-    : "https://ai-study-companion-2cda.vercel.app/api";
+    : "https://ai-study-companion-1.onrender.com/api";
