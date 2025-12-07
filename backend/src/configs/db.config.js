@@ -12,6 +12,13 @@ const client = new MongoClient(process.env.uri, {
   }
 });
 
+// Create a single connection promise and reuse it (good for serverless)
+if (!global._mongoClientPromise) {
+  global._mongoClientPromise = client.connect();
+}
+const clientPromise = global._mongoClientPromise;
+
+
 
 /*  just to check if the connectoin is there or not // ignore//
 async function runConnection() {
@@ -38,6 +45,8 @@ runConnection();
 */
 async function usersDB() {
   try {
+    await clientPromise; 
+
     const usersDB = client.db('usersDB');
     const users = usersDB.collection('users');
     return users;
@@ -49,6 +58,8 @@ async function usersDB() {
 
 async function coursesDB() {
   try {
+    await clientPromise; 
+
     const coursesDB = client.db('coursesDB');
     const courses = coursesDB.collection('courses')
     return courses;
@@ -60,6 +71,8 @@ async function coursesDB() {
 
 async function tasksDB() {
   try {
+    await clientPromise; 
+
     const tasksDB = client.db('tasksDB');
     const tasks = tasksDB.collection('toDo');
     return tasks;
@@ -71,6 +84,8 @@ async function tasksDB() {
 
 async function quizDB() {
   try {
+    await clientPromise; 
+
     const quizDB = client.db("quizDB");
     const quizz = quizDB.collection("quizz");
     return quizz;
@@ -81,6 +96,8 @@ async function quizDB() {
 
 async function CreateViewnotesDB() {
   try {
+    await clientPromise; 
+
     const CreateViewnotesDB = client.db('CreateViewnotesDB');
     const CreateViewnote = CreateViewnotesDB.collection('CreateViewnote');
     return CreateViewnote;
@@ -93,6 +110,8 @@ async function CreateViewnotesDB() {
 
 async function enrollmentsDB() {
   try {
+    await clientPromise; 
+
     const enrollmentsDB = client.db('enrollmentsDB');
     const enrollments = enrollmentsDB.collection('enrollments');
     return enrollments;
@@ -103,6 +122,8 @@ async function enrollmentsDB() {
 
 async function materialsDB() {
   try {
+    await clientPromise; 
+
     const materialsDB = client.db('materialsDB');
     const materials = materialsDB.collection('materials');
     return materials;
@@ -113,6 +134,8 @@ async function materialsDB() {
 
 async function questionsDB() {
   try {
+    await clientPromise; 
+
     const questionsDB = client.db('questionsDB');
     const questions = questionsDB.collection('questions');
     return questions;
@@ -123,6 +146,8 @@ async function questionsDB() {
 
 async function quizAttemptsDB() {
   try {
+    await clientPromise; 
+
     const quizAttemptsDB = client.db('quizAttemptsDB');
     const quizAttempts = quizAttemptsDB.collection('quizAttempts');
     return quizAttempts;
@@ -133,6 +158,8 @@ async function quizAttemptsDB() {
 
 async function notesDB() {
   try {
+    await clientPromise; 
+    
     const notesDB = client.db('notesDB');
     const notes = notesDB.collection('notes');
     return notes;

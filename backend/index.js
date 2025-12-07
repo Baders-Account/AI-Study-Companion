@@ -6,8 +6,7 @@ import express from 'express'
 import cors from 'cors'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
-import OpenAI from 'openai'
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+
 
 
 const app = express();
@@ -365,6 +364,9 @@ router.post("/quizz/ai-create", async (req, res) => {
                 return res.status(400).json({ error: "quizName, course and notesText cannot be empty or whitespace only." });
         }
         try {
+                const OpenAI = (await import('openai')).default;
+                const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
                 const { ObjectId } = await import('mongodb');
                 const system = "Generate exactly 10 multiple-choice questions based only on the provided notes. Return strict JSON with key 'quiz' as an array of 10 items. Each item must have: question (string), options (object with keys A,B,C,D strings), answer (one of 'A','B','C','D'). No extra text.";
                 const completion = await openai.chat.completions.create({
@@ -1572,10 +1574,6 @@ export const config = {
                 bodyParser: false,
         },
 };
-export default serverless(app, {                       
-         basePath: "/api"
-});
-
 
 
 
