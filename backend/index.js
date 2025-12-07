@@ -33,11 +33,11 @@ const corsOptions = {
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true
 };
-
-app.use(cors(corsOptions));
+router.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 
 // Handle preflight requests explicitly for Vercel serverless (Express 5 syntax)
-app.options('{*splat}', cors(corsOptions));
+//app.options('{*splat}', cors(corsOptions));
 
 // Increase payload limit for file uploads (base64 encoded files can be large)
 app.use(express.json({ limit: '20mb' }));
