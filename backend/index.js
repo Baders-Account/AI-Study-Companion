@@ -1551,7 +1551,7 @@ app.get("/", (req, res) => {
 
 
 // All requests to API begin with /api
-app.use("/", router);
+app.use("/api", router);
 
 // Fallback routes
 app.use((req, res) => {
