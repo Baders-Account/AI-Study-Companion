@@ -33,8 +33,8 @@ const corsOptions = {
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true
 };
-router.use(cors(corsOptions));
-//app.use(cors(corsOptions));
+
+app.use(cors(corsOptions));
 
 // Handle preflight requests explicitly for Vercel serverless (Express 5 syntax)
 //app.options('{*splat}', cors(corsOptions));
