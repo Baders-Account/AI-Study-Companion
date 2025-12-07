@@ -1549,7 +1549,7 @@ app.use((req, res, next) => {
 });
 
 
-// Root route for health check
+
 app.get("/", (req, res) => {
 res.json({ message: "Backend API is running", status: "ok" });
 });
@@ -1560,19 +1560,21 @@ app.use("/api", router);
 
 
 
+
+
+
 app.use((req, res) => {
-        res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });
+         res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });
 });
 
 
-const RENDER_PORT = process.env.PORT || 3000;
+
+const RENDER_PORT = process.env.PORT || 3000; 
 
 
-if (!process.env.VERCEL) { 
-        app.listen(RENDER_PORT, () => {
-        console.log(`Server is LIVE and listening on port ${RENDER_PORT}`);
- });
-}
+app.listen(RENDER_PORT, () => {
+    console.log(`Server is LIVE and listening on port ${RENDER_PORT}`);
+});
 
 
 
