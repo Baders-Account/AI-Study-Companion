@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { API_BASE_URL } from '../../../config';
 
 export const CoursesContext = React.createContext();
 
@@ -6,7 +7,7 @@ function CourseContext({ children }) {
     const [courses, setCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const url = "https://backend-phi-topaz.vercel.app/api/courses";
+    const url = `${API_BASE_URL}/courses`;
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -27,13 +28,13 @@ function CourseContext({ children }) {
             }
         };
         fetchCourses();
-    }, []); 
+    }, []);
 
     return (
         <CoursesContext.Provider value={{ courses, setCourses, isLoading, error }}>
             {children}
         </CoursesContext.Provider>
-    ); 
+    );
 }
 
 export default CourseContext;

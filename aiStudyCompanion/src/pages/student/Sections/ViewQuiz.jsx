@@ -1,94 +1,95 @@
 import React, { useMemo, useState, useEffect } from "react";
+import { API_BASE_URL } from "../../../config";
 
-const URL = "https://backend-phi-topaz.vercel.app/api/quizz";
+const URL = `${API_BASE_URL}/quizz`;
 
 function ViewQuiz() {
-const [quizzes, setQuizzes] = useState([]);
-const [showAllQuizzes, setShowAllQuizzes] = useState(false);
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
-const [expandedId, setExpandedId] = useState(null);
-const [details, setDetails] = useState({});
+  const [quizzes, setQuizzes] = useState([]);
+  const [showAllQuizzes, setShowAllQuizzes] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [expandedId, setExpandedId] = useState(null);
+  const [details, setDetails] = useState({});
 
-// to show first three quizzez
-const limit = 3;
+  // to show first three quizzez
+  const limit = 3;
 
-function getCollapsedList(list, showAll, limit) {
-  if (showAll) {
-    return list;
-  } else {
-    return list.slice(0, limit);
+  function getCollapsedList(list, showAll, limit) {
+    if (showAll) {
+      return list;
+    } else {
+      return list.slice(0, limit);
+    }
   }
-}
 
-const visibleQuizzes = useMemo(
-  () => getCollapsedList(quizzes, showAllQuizzes, limit),
-  [quizzes, showAllQuizzes]
-);
+  const visibleQuizzes = useMemo(
+    () => getCollapsedList(quizzes, showAllQuizzes, limit),
+    [quizzes, showAllQuizzes]
+  );
 
 
-// fetch the quizzez
-useEffect(()=>{
-    const fetchQuizzes = async()=>{
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await fetch(URL);
-            if(!response.ok){
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const result = await response.json();
-            setQuizzes(result);
-        } catch (error) {
-            console.log(error);
-            setError(error.message);
-        }finally{
-            setLoading(false);
+  // fetch the quizzez
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(URL);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+        const result = await response.json();
+        setQuizzes(result);
+      } catch (error) {
+        console.log(error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+
     };
     fetchQuizzes()
-},[]);
+  }, []);
 
-const openQuiz = async(id) =>{
-    if(details[id]){ setExpandedId(expandedId === id ? null : id); return; }
-    setLoading(true);
-    setError(null);
-    try{
-        const res = await fetch(`${URL}/${id}/details`);
-        if(!res.ok){ throw new Error(`HTTP error! status: ${res.status}`) }
-        const doc = await res.json();
-        setDetails(prev => ({...prev, [id]: doc}));
-        setExpandedId(id);
-    } catch(err){
-        setError(err.message);
-    } finally{
-        setLoading(false);
-    }
-};
-
-const handleDelete = async(id) =>{
+  const openQuiz = async (id) => {
+    if (details[id]) { setExpandedId(expandedId === id ? null : id); return; }
     setLoading(true);
     setError(null);
     try {
-        const response = await fetch(`${URL}/${id}`,{
-            method: "DELETE",
-        });
-        if(!response.ok){
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        setQuizzes((prev) => prev.filter((q)=> q.id !== id));
+      const res = await fetch(`${URL}/${id}/details`);
+      if (!res.ok) { throw new Error(`HTTP error! status: ${res.status}`) }
+      const doc = await res.json();
+      setDetails(prev => ({ ...prev, [id]: doc }));
+      setExpandedId(id);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`${URL}/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      setQuizzes((prev) => prev.filter((q) => q.id !== id));
     } catch (error) {
-        setError(error.message);
+      setError(error.message);
     }
-    finally{
-        setLoading(false);
+    finally {
+      setLoading(false);
     }
-};
+  };
 
 
-return (
-     <div className="flex flex-col rounded-2xl border shadow-lg p-5 bg-white dark:bg-gray-800">
+  return (
+    <div className="flex flex-col rounded-2xl border shadow-lg p-5 bg-white dark:bg-gray-800">
       <header className="mb-4">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           View Quizzes
@@ -131,7 +132,7 @@ return (
               <div className="mt-3 text-sm">
                 {details[q.id].questions?.map((item, idx) => (
                   <div key={idx} className="mb-2">
-                    <p className="font-medium">{idx+1}. {item.question}</p>
+                    <p className="font-medium">{idx + 1}. {item.question}</p>
                     <ul className="ml-4 list-disc">
                       <li>A. {item.options?.A}</li>
                       <li>B. {item.options?.B}</li>
@@ -161,5 +162,5 @@ return (
         </button>
       </div>
     </div>
-);
-}export default ViewQuiz
+  );
+} export default ViewQuiz

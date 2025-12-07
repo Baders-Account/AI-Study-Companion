@@ -1,46 +1,138 @@
 // pages/auth/LoginSignup.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config.js";
+import { useAuth } from "../../contexts/AuthContext";
 
 function LoginSignup() {
+  // Login state
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  // Signup state
   const [signupUsername, setSignupUsername] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
-  const [loginError, setLoginError] = useState("");
+  const [signupFirstName, setSignupFirstName] = useState("");
+  const [signupLastName, setSignupLastName] = useState("");
+  const [signupRole, setSignupRole] = useState("student"); // student or instructor
   const [signupError, setSignupError] = useState("");
   const [signupSuccess, setSignupSuccess] = useState("");
+  const [signupLoading, setSignupLoading] = useState(false);
 
   const navigate = useNavigate();
+  const { login } = useAuth(); // Use login function from context
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const u = loginUsername.trim().toLowerCase();
-    const p = loginPassword;
+    setLoginError("");
+    setLoginLoading(true);
 
-   if (u === "student" && p === "123") return navigate("/Dashboard");
-  if (u === "instructor" && p === "123") return navigate("/instructor");
-  if (u === "admin" && p === "123") return navigate("/admin"); // ✅ add this
+    const username = loginUsername.trim();
+    const password = loginPassword;
 
-  setLoginError("Invalid username or password. Try student/123, instructor/123, or admin/123.");
+    if (!username || !password) {
+      setLoginError("Please enter both username and password.");
+      setLoginLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Use context login function to update global state and localStorage
+        login(data.user);
+
+        // Navigate based on role
+        const role = data.user.role;
+        if (role === "admin") {
+          navigate("/admin");
+        } else if (role === "instructor") {
+          navigate("/instructor");
+        } else {
+          navigate("/Dashboard");
+        }
+      } else {
+        setLoginError(data.error || "Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoginLoading(false);
+    }
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setSignupError("");
     setSignupSuccess("");
+    setSignupLoading(true);
 
-    if (!signupUsername || !signupEmail || !signupPassword || !signupConfirmPassword) {
+    // Validation
+    if (!signupUsername || !signupEmail || !signupPassword || !signupConfirmPassword || !signupFirstName || !signupLastName) {
       setSignupError("Please fill in all fields.");
+      setSignupLoading(false);
       return;
     }
+
     if (signupPassword !== signupConfirmPassword) {
       setSignupError("Passwords do not match.");
+      setSignupLoading(false);
       return;
     }
-    setSignupSuccess("Account created (demo). You can log in with student/123 or instructor/123 or admin/123.");
+
+    if (signupPassword.length < 6) {
+      setSignupError("Password must be at least 6 characters.");
+      setSignupLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: signupUsername.trim(),
+          email: signupEmail.trim(),
+          password: signupPassword,
+          firstName: signupFirstName.trim(),
+          lastName: signupLastName.trim(),
+          role: signupRole,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSignupSuccess("Account created successfully! You can now log in.");
+        // Clear form
+        setSignupUsername("");
+        setSignupEmail("");
+        setSignupPassword("");
+        setSignupConfirmPassword("");
+        setSignupFirstName("");
+        setSignupLastName("");
+        setSignupRole("student");
+      } else {
+        setSignupError(data.error || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      setSignupError("Network error. Please check your connection and try again.");
+    } finally {
+      setSignupLoading(false);
+    }
   };
 
   return (
@@ -75,26 +167,89 @@ function LoginSignup() {
             <form onSubmit={handleLogin} className="flex flex-col gap-4">
               <input
                 type="text"
-                placeholder="Enter Username (student or instructor or admin)"
+                placeholder="Enter Username"
                 value={loginUsername}
                 onChange={(e) => setLoginUsername(e.target.value)}
                 className="w-full px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
                 style={{ backgroundColor: "#D9D9D9", color: "#676C80" }}
+                disabled={loginLoading}
               />
               <input
                 type="password"
-                placeholder="Enter Password (123)"
+                placeholder="Enter Password"
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
                 className="w-full px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
                 style={{ backgroundColor: "#D9D9D9", color: "#676C80" }}
+                disabled={loginLoading}
               />
               {loginError && <p className="text-red-300 text-sm text-center">{loginError}</p>}
-              <button type="submit" className="w-full px-4 py-3 rounded-full font-semibold mt-2" style={{ backgroundColor: "#676C80", color: "#FFFFFF" }}>
-                Log In
+              <button
+                type="submit"
+                className="w-full px-4 py-3 rounded-full font-semibold mt-2 disabled:opacity-50"
+                style={{ backgroundColor: "#676C80", color: "#FFFFFF" }}
+                disabled={loginLoading}
+              >
+                {loginLoading ? "Logging in..." : "Log In"}
               </button>
-              <div className="text-center mt-2">
-                <span className="text-xs text-gray-300">Demo: student/123 or instructor/123 or admin/123.</span>
+
+              {/* Quick Login Buttons */}
+              <div className="mt-4 pt-4 border-t border-gray-600">
+                <p className="text-xs text-gray-400 text-center mb-3">Quick Login (Dev Only)</p>
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginUsername("student");
+                      setLoginPassword("student123");
+                      setTimeout(() => document.querySelector('form').requestSubmit(), 100);
+                    }}
+                    className="w-full px-3 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: "#4A90A4", color: "#FFFFFF" }}
+                    disabled={loginLoading}
+                  >
+                    🎓 Login as Student
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginUsername("MuathStud1");
+                      setLoginPassword("123456");
+                      setTimeout(() => document.querySelector('form').requestSubmit(), 100);
+                    }}
+                    className="w-full px-3 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: "#5AA89A", color: "#FFFFFF" }}
+                    disabled={loginLoading}
+                  >
+                    🎓 Login as MuathStud1
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginUsername("instructor");
+                      setLoginPassword("instructor123");
+                      setTimeout(() => document.querySelector('form').requestSubmit(), 100);
+                    }}
+                    className="w-full px-3 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: "#8B7355", color: "#FFFFFF" }}
+                    disabled={loginLoading}
+                  >
+                    👨‍🏫 Login as Instructor
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setLoginUsername("admin");
+                      setLoginPassword("admin123");
+                      setTimeout(() => document.querySelector('form').requestSubmit(), 100);
+                    }}
+                    className="w-full px-3 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: "#8B4555", color: "#FFFFFF" }}
+                    disabled={loginLoading}
+                  >
+                    🔐 Login as Admin
+                  </button>
+                </div>
               </div>
             </form>
           </div>
@@ -105,6 +260,54 @@ function LoginSignup() {
               Signup
             </h3>
             <form onSubmit={handleSignup} className="flex flex-col gap-4">
+              {/* Role Toggle */}
+              <div className="flex justify-center gap-2 mb-2">
+                <button
+                  type="button"
+                  onClick={() => setSignupRole("student")}
+                  className={`px-4 py-2 rounded-full font-semibold transition-all ${signupRole === "student" ? "ring-2 ring-blue-400" : ""}`}
+                  style={{
+                    backgroundColor: signupRole === "student" ? "#4A90A4" : "#676C80",
+                    color: "#FFFFFF"
+                  }}
+                  disabled={signupLoading}
+                >
+                  Student
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSignupRole("instructor")}
+                  className={`px-4 py-2 rounded-full font-semibold transition-all ${signupRole === "instructor" ? "ring-2 ring-blue-400" : ""}`}
+                  style={{
+                    backgroundColor: signupRole === "instructor" ? "#4A90A4" : "#676C80",
+                    color: "#FFFFFF"
+                  }}
+                  disabled={signupLoading}
+                >
+                  Instructor
+                </button>
+              </div>
+
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  value={signupFirstName}
+                  onChange={(e) => setSignupFirstName(e.target.value)}
+                  className="flex-1 px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  style={{ backgroundColor: "#D9D9D9", color: "#676C80" }}
+                  disabled={signupLoading}
+                />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  value={signupLastName}
+                  onChange={(e) => setSignupLastName(e.target.value)}
+                  className="flex-1 px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  style={{ backgroundColor: "#D9D9D9", color: "#676C80" }}
+                  disabled={signupLoading}
+                />
+              </div>
               <input
                 type="text"
                 placeholder="Enter Username"
@@ -112,6 +315,7 @@ function LoginSignup() {
                 onChange={(e) => setSignupUsername(e.target.value)}
                 className="w-full px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
                 style={{ backgroundColor: "#D9D9D9", color: "#676C80" }}
+                disabled={signupLoading}
               />
               <input
                 type="email"
@@ -120,14 +324,16 @@ function LoginSignup() {
                 onChange={(e) => setSignupEmail(e.target.value)}
                 className="w-full px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
                 style={{ backgroundColor: "#D9D9D9", color: "#676C80" }}
+                disabled={signupLoading}
               />
               <input
                 type="password"
-                placeholder="Enter Password"
+                placeholder="Enter Password (min 6 chars)"
                 value={signupPassword}
                 onChange={(e) => setSignupPassword(e.target.value)}
                 className="w-full px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
                 style={{ backgroundColor: "#D9D9D9", color: "#676C80" }}
+                disabled={signupLoading}
               />
               <input
                 type="password"
@@ -136,11 +342,17 @@ function LoginSignup() {
                 onChange={(e) => setSignupConfirmPassword(e.target.value)}
                 className="w-full px-4 py-3 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-blue-400"
                 style={{ backgroundColor: "#D9D9D9", color: "#676C80" }}
+                disabled={signupLoading}
               />
               {signupError && <p className="text-red-300 text-sm text-center">{signupError}</p>}
               {signupSuccess && <p className="text-green-300 text-sm text-center">{signupSuccess}</p>}
-              <button type="submit" className="w-full px-4 py-3 rounded-full font-semibold mt-2" style={{ backgroundColor: "#676C80", color: "#FFFFFF" }}>
-                Create Account
+              <button
+                type="submit"
+                className="w-full px-4 py-3 rounded-full font-semibold mt-2 disabled:opacity-50"
+                style={{ backgroundColor: "#676C80", color: "#FFFFFF" }}
+                disabled={signupLoading}
+              >
+                {signupLoading ? "Creating Account..." : "Create Account"}
               </button>
             </form>
           </div>
