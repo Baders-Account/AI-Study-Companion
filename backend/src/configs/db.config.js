@@ -4,7 +4,14 @@ import { MongoClient, ServerApiVersion } from 'mongodb'
 //const { MongoClient, ServerApiVersion } =  require('mongodb');
 dotenv.config();
 
-const client = new MongoClient(process.env.uri, {
+const MONGODB_URI = process.env.uri;
+
+if (!MONGODB_URI) {
+    console.error("CRITICAL ERROR: MongoDB URI variable ('uri') is missing from environment.");
+    process.exit(1); 
+}
+
+const client = new MongoClient(MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -12,30 +19,20 @@ const client = new MongoClient(process.env.uri, {
   }
 });
 
-
-/*  just to check if the connectoin is there or not // ignore//
-async function runConnection() {
-    try{
-         console.log('Connecting to MongoDB…');
-            await client.connect();  // <- important
-
-        console.log('Connected.');
-        const coursesDB =  client.db('coursesDB');
-        const courses = coursesDB.collection('courses').find();
-
-        // check if it works
-        
-
-    }
-    
-    catch (err) {
-    console.error("Connection error:", err);
-  }
+ 
+try {
+    console.log("Attempting MongoDB client connection...");
+    await client.connect();
+    console.log("MongoDB client connected successfully.");
+} catch (err) {
+    // If connection fails 
+    console.error("FATAL MongoDB CONNECTION FAILURE:");
+    console.error("Error Message:", err.message);
+    process.exit(1);
 }
 
-runConnection();
 
-*/
+
 async function usersDB() {
   try {
     const usersDB = client.db('usersDB');
