@@ -1551,7 +1551,7 @@ app.get("/", (req, res) => {
 
 
 // All requests to API begin with /api
-app.use("/api", router);
+app.use("/", router);
 
 // Fallback routes
 app.use((req, res) => {
@@ -1572,7 +1572,9 @@ export const config = {
                 bodyParser: false,
         },
 };
-export default serverless(app);
+export default serverless(app, {                       
+         basePath: "/api"
+});
 
 
 
