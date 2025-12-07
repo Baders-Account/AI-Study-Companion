@@ -1537,43 +1537,43 @@ router.delete('/CreateViewnote/:id', async (req, res) => {
 
 
 
+
+
+
+
+
 // Debug middleware to log requests
 app.use((req, res, next) => {
-        console.log(`[${req.method}] ${req.path}`);
-        next();
+         console.log(`[${req.method}] ${req.path}`);
+         next();
 });
 
 
-// Root route for health check
+
 app.get("/", (req, res) => {
-        res.json({ message: "Backend API is running", status: "ok" });
+res.json({ message: "Backend API is running", status: "ok" });
 });
 
 
-// All requests to API begin with /api
+
 app.use("/api", router);
 
-// Fallback routes
+
+
+
+
+
 app.use((req, res) => {
-        res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });
+         res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });
 });
 
-// Start local server (only runs when not in serverless environment)
-if (process.env.NODE_ENV !== 'production') {
-        app.listen(PORT, () => {
-                console.log(`Server running on http://localhost:${PORT}`);
-        });
-}
 
-// Vercel serverless handler
-import serverless from "serverless-http";
-export const config = {
-        api: {
-                bodyParser: false,
-        },
-};
-export default serverless(app, {                       
-         basePath: "/api"
+
+const RENDER_PORT = process.env.PORT || 3000; 
+
+
+app.listen(RENDER_PORT, () => {
+    console.log(`Server is LIVE and listening on port ${RENDER_PORT}`);
 });
 
 
